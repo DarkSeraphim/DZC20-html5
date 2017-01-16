@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="./style.css"/>
+        <style>
+            body {
+                background: url('./images/desktop-bg.jpg');
+            }
+        </style>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    </head>
+    <body>
+        <div id="assignment-modal" class="modal-blur">
+            <div class="modal-transparent"></div>
+            <div class="content-title">
+                <ul>
+                    <li>X</li>
+                </ul>
+            </div>
+            <div class="content">
+                
+            </div>
+        </div>
+        <div id="taskbar">
+            <ul>
+                <li class="start">Start</li>
+                <li>Button 1</li>
+                <li>Button 2</li>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            $('#assignment-modal').draggable({
+                handle: '.content-title'
+            });
+        </script>
+    </body>
+</html>

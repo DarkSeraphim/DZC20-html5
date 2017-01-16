@@ -1,0 +1,144 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    color: white;
+    font-family: 'Arial';
+    background: #314D79;
+
+}
+
+#modal {
+    margin: auto;
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 10px;
+    text-align: center;
+    min-width: 200px;
+    width: 20%;
+}
+
+#modal .title {
+    width: 100%;
+}
+
+#username {
+    margin-top: 20px;
+    width: 60%;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#login-button {
+    margin-top: 10px;
+    width: 60%;
+    padding: 5px;
+}
+
+#taskbar {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    height: 40px;
+    background: url('./images/desktop-taskbar.png');
+}
+
+#taskbar ul {
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+#taskbar ul li.start {
+    /*background: url('./images/desktop-taskbar-start.png');
+    background-size: 100% 100%;*/
+    background: linear-gradient(to top, #e05982 0%,#d23464 100%);
+    width: 150px;
+    margin-left:0px;
+    font-weight: bold;
+    font-size: 24px;
+    border-radius: 0px 10px 0px 0px;
+}
+
+#taskbar ul li {
+    float: left;
+    list-style: none;
+    height: 100%;
+    margin-left: 10px;
+    line-height: 40px;
+    text-align: center;
+    color: white;
+}
+
+#assignment-modal {
+    margin-top: 20px;
+    width: 800px;
+    height: 600px;
+    width: 800px;
+    height: 600px;
+    border-radius: 7px;
+    background: none;
+}
+
+.modal-blur {
+    border: 1px inset #eee;
+    box-shadow: 0px 0px 6px 0px black;
+}
+
+.modal-transparent {
+    background: url('./images/desktop-bg.jpg') fixed;
+    width: 100%;
+    height: 100%;
+    filter: blur(5px);
+    float: left;
+}
+
+#assignment-modal .content {
+    margin: 30px 5px 5px 5px;
+    background: #ccc;
+    z-index: 1;
+    float: left;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px - 25px);
+    position: absolute;
+}
+
+#assignment-modal .content-title {
+    margin: 5px 5px 0px 5px;
+    background: none;
+    z-index: 1;
+    float: left;
+    width: calc(100% - 10px);
+    height: 25px;
+    position: absolute;
+}
+
+#assignment-modal .content-title ul {
+    height: 100%;
+    margin: 0px;
+    margin-right: 10px;
+    padding: 0px;
+}
+
+#assignment-modal .content-title ul li {
+    float: right;
+    list-style: none;
+    height: 100%;
+    margin-left: 10px;
+    line-height: 25px;
+    text-align: center;
+    color: white;
+}
+
+#assignment-modal .content-title ul li:first-child {
+    background: red;
+    border-radius: 5px;
+    padding: 0px 5px;
+}
