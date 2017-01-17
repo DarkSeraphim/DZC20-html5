@@ -148,6 +148,7 @@ body {
     overflow-y : hidden;
     background: #F7F2C8;
     color: #6670AB;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
     font-weight: bold;
     height: 100%;
     border: 3px solid #989D92;
@@ -170,13 +171,13 @@ body {
 }
 .email-listitem {
     cursor: pointer;
-    padding-top : 16px;
-    padding-bottom: 16px;
+    padding-bottom: 20px;
     padding-right: 16px;
     min-height: 56px;
     border-bottom: 2px solid rgba(152, 157, 146, 0.26);
 }
-.email-listitem .email-title , .email-date{
+.email-listitem .email-title{
+    padding-top : 20px;
     padding-left: 72px;
 }
 .email-date {
@@ -185,7 +186,8 @@ body {
     font-size: small;
 }
 .email-icon {
-    padding-left: 16px;
+    padding-top : 20px;
+    padding-left: 20px;
     width: 30px;
     height: 30px;
     align-content: center;
@@ -205,8 +207,11 @@ body {
     vertical-align: text-top;
     overflow-y: hidden;
 }
-.email-item .email-title{
+.email-item .email-title {
     font-size: large;
+}
+.email-item .email-title h3 {
+    margin-top: 16px;
 }
 .email-from:before {
     content:  "From: ";
