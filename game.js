@@ -9,13 +9,23 @@ $(function () {
   var user;
   var doLogin = function (username) {
     user = UserData.load(username);
-    return !!user;
+    return user;
   };
+  userdata = doLogin(username);
 
+  // TODO: handle this shit!!! For now, it will just create new user.
+  if (!userdata) {
+    UserData.save(username, {});
+    userdata = doLogin(username);
+  }
+  emails = userdata.emails || emails;
   initialize();
   updateInbox();
-
 });
+
+// Mock-up username and userdata
+var username = 'ahihi';
+var userdata = null;
 
 // Mock-up emails
 var emails = [
@@ -41,7 +51,6 @@ function initialize() {
     showInbox(true);
   }
 }
-
 
 // Adds new email
 function addEmail(from, title, message) {
@@ -98,6 +107,25 @@ function updateInbox() {
       updateInbox();
     }
   });
+  // Updates inbox shorcut
+  updateInboxShortcut();
+
+  // Save to storage
+  userdata.emails = emails;
+  UserData.save(username, userdata);
+}
+
+// Updates Inbox shortcut badge
+function updateInboxShortcut() {
+  var inboxShorcutBadge = document.querySelector(".email-shortcut .email-newmail");
+  var hasNewMail = emails.find(function (email) {
+    return email.read == false;
+  });
+  if (hasNewMail) {
+    inboxShorcutBadge.className = inboxShorcutBadge.className.replace(/\bhidden\b/, '');
+  } else {
+    inboxShorcutBadge.className += " hidden";
+  }
 }
 
 // Shows email message
