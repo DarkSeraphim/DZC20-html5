@@ -11,13 +11,39 @@ $(function () {
     user = UserData.load(username);
     return !!user;
   };
+
+  initialize();
   updateInbox();
 
-  // Add email example
-  addEmail("ahihi@yahoo.com","Ahihi","messsageeee ;) \nasdasdsa");
 });
 
-// For use after passing an assignment
+// Mock-up emails
+var emails = [
+  {
+    "from": "WhatIsLove_BabyDontHurtMe@tue.nl",
+    "title": "Welcome to the Computer Science program at TU/e!",
+    "message": "Welcome to our study plaplaplapal",
+    "read": false,
+    "time": (new Date()).getTime()
+  }
+];
+
+// Initializes html components
+function initialize() {
+  // Onclick for close modal button
+  var closeModalBtn = document.querySelector('#assignment-modal .closeWindowBtn');
+  closeModalBtn.onclick = function () {
+    showInbox(false);
+  }
+  // Onclick for inbox shorcut
+  var inboxShorcut = document.querySelector(".email-shortcut");
+  inboxShorcut.onclick = function () {
+    showInbox(true);
+  }
+}
+
+
+// Adds new email
 function addEmail(from, title, message) {
   var email = {
     "from": from,
@@ -32,16 +58,17 @@ function addEmail(from, title, message) {
   updateInbox();
 }
 
-// Mock-up emails
-var emails = [
-  {
-    "from": "WhatIsLove_BabyDontHurtMe@tue.nl",
-    "title": "Welcome to the Computer Science program at TU/e!",
-    "message": "Welcome to our study plaplaplapal",
-    "read": false,
-    "time": (new Date()).getTime()
+// Shows/hides mailbox
+function showInbox(bool) {
+  var modal = document.getElementById("assignment-modal");
+  if (bool) {
+    modal.className = modal.className.replace(/\bhidden\b/, '');
+  } else {
+    modal.className += " hidden";
   }
-];
+}
+
+// Updates Inbox view
 function updateInbox() {
   // Gets all mails from storage
   // TODO
@@ -73,6 +100,7 @@ function updateInbox() {
   });
 }
 
+// Shows email message
 function showMessage(email) {
   var title = document.querySelector('.email-item .email-title h3');
   var from = document.querySelector('.email-item .email-from');
