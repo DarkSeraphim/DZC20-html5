@@ -86,11 +86,7 @@ if (typeof StyleHelper === 'undefined') {
         //updateInbox();
     });
 
-    // Updates Inbox view
     function updateInbox() {
-      // Gets all mails from storage
-      // TODO
-
       // Removes all mails
       var emailList = document.getElementsByClassName('email-list')[0];
       while (emailList.lastChild) {
@@ -148,14 +144,47 @@ if (typeof StyleHelper === 'undefined') {
       updateInbox();
     }
 
-    // Shows email message
+
     function showMessage(email) {
-      var title = document.querySelector('.email-item .email-title h3');
-      var from = document.querySelector('.email-item .email-from');
-      var message = document.querySelector('.email-item .email-message');
-      title.textContent = email.title;
-      from.textContent = email.from;
-      message.textContent = email.message;
+        var title = document.querySelector('.email-item .email-title h3');
+        var from = document.querySelector('.email-item .email-from');
+        var message = document.querySelector('.email-item .email-message');
+        title.textContent = email.title;
+        from.textContent = email.from;
+        message.textContent = email.message;
+
+        // Updates game level(s)
+        // Remove all game levels
+        var levelList = document.getElementsByClassName('email-level-container')[0];
+        while (levelList.lastChild) {
+            levelList.removeChild(levelList.lastChild);
+        }
+        // Adds levels
+        email.assignment.forEach(function (assId) {
+            if(assId >= assignments.length){
+              throw Error('game.js assignmentId not in range');
+            }
+            var assignment = assignments[assId];
+            var level = document.createElement('div');
+            level.className = 'email-level';
+            if (!assignment.status){
+              level.className += ' level-disabled';
+            }
+            var icon = document.createElement('div');
+            icon.className = 'level-icon';
+            var title = document.createElement('div');
+            title.className = 'level-name';
+            title.textContent = assignment.title;
+            level.appendChild(icon);
+            level.appendChild(title);
+            levelList.appendChild(level);
+            // Registers onclick
+            icon.onclick = function () {
+              if(assignment.status) {
+                alert('Clicked on assignment: ' + assId);
+              }
+            };
+          });
     }
 
     function initGameBoard() {
@@ -169,7 +198,6 @@ if (typeof StyleHelper === 'undefined') {
                 // $(this).data("draggable")
                 // on 2.x versions of jQuery use "ui-draggable"
                 // $(this).data("ui-draggable")
-
                 $(this).data('uiDraggable').originalPosition = {
                     top : 0,
                     left : 0
