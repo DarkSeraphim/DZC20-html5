@@ -40,7 +40,7 @@ if (typeof StyleHelper === 'undefined') {
     var logOut = function () {
         StyleHelper.hide('#taskbar');
         StyleHelper.show('#login-modal');
-        StyleHelper.show('.shortcuts');
+        StyleHelper.hide('.shortcuts');
         UserData.save(user.name, user);
         StyleHelper.set('body', 'backgroundImage', '');
         user = undefined;
@@ -79,6 +79,11 @@ if (typeof StyleHelper === 'undefined') {
             e.preventDefault();
             logOut();
             return false;
+        });
+        EventHelper.on('#start-menu', 'click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            StyleHelper.hide('#start-menu');
         });
 
         EventHelper.on('.modal-closeWindowBtn', 'click', (e) => {
