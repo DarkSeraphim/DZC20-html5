@@ -39,8 +39,12 @@ body {
     padding: 5px;
 }
 
+.shortcuts {
+    width: 100%;
+    height: calc(100% - 40px);
+}
+
 #taskbar {
-    z-index: -1;
     position: fixed;
     bottom: 0px;
     left: 0px;
@@ -77,13 +81,32 @@ body {
     color: white;
 }
 
-#assignment-modal {
-    width: 800px;
-    height: 600px;
+#taskbar .start{
+    cursor: pointer;
+    z-index: 1; 
+}
+
+#start-menu{
+    position: absolute;
+    left: 0; 
+    bottom: 40px;
+    width: 200px;
+    background: white;
+    height: 150px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+#start-menu>ul>li{
+    background-color: gray;
+    color: black;
+}
+
+.modal {
     width: 800px;
     height: 600px;
     border-radius: 7px;
     background: none;
+    position: relative;
 }
 
 .modal-blur {
@@ -99,7 +122,7 @@ body {
     float: left;
 }
 
-#assignment-modal .content {
+.modal-content {
     margin: 30px 5px 5px 5px;
     background: #ccc;
     z-index: 1;
@@ -109,7 +132,7 @@ body {
     position: absolute;
 }
 
-#assignment-modal .content-title {
+.modal-content-title {
     margin: 5px 5px 0px 5px;
     background: none;
     z-index: 1;
@@ -119,14 +142,14 @@ body {
     position: absolute;
 }
 
-#assignment-modal .content-title ul {
+.modal-content-title ul {
     height: 100%;
     margin: 0px;
     margin-right: 10px;
     padding: 0px;
 }
 
-#assignment-modal .content-title ul li {
+.modal-content-title ul li {
     float: right;
     list-style: none;
     height: 100%;
@@ -136,7 +159,7 @@ body {
     color: white;
 }
 
-#assignment-modal .closeWindowBtn {
+.modal-closeWindowBtn {
     background: red;
     border-radius: 5px;
     padding: 0px 5px;
@@ -151,6 +174,7 @@ body {
     font-weight: bold;
     height: 100%;
     border: 3px solid #989D92;
+    box-sizing: border-box;
 }
 .email-banner {
     padding-left: 20px;
@@ -250,4 +274,43 @@ body {
 }
 .hidden {
     display: none;
+}
+
+#assignment-modal .modal-content {
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+#puzzle {
+    width: calc(100% - 10px);
+    height: calc(70% - 5px);
+}
+
+.snap-target {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid white;
+}
+
+#tiles {
+    width: calc(100% - 10px);
+    height: calc(30% - 5px);
+}
+
+.tile {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: vertical;
+    justify-content: center;
+    background: #fff;
+    border: 1px solid black;
+}
+
+.tile span {
+    display: inline-flex;
+    line-height: 40px;
+    color: black;
 }

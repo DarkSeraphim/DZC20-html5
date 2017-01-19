@@ -1,9 +1,12 @@
 'use strict';
 
 window.StyleHelper = (function () {
+    var select = function (selector, func) {
+        document.querySelectorAll(selector).forEach(element => func(element));
+    };
     return {
         hide: function (selector) {
-            document.querySelectorAll(selector).forEach(element => {
+            select(selector, element => {
                 if (element.style.display === 'none') {
                     return;
                 }
@@ -12,9 +15,21 @@ window.StyleHelper = (function () {
             });
         },
         show: function (selector) {
-            document.querySelectorAll(selector).forEach(element => {
+            select(selector, element => {
                 var old = element.getAttribute('data-display') || '';
                 element.style.display = old;
+            });
+        },
+        toggle: function (selector) {
+            select(selector, element => {
+                var show = element.style.display === 'none';
+                if (show) {
+                   var old = element.getAttribute('data-display') || '';
+                    element.style.display = old;
+                } else {
+                    element.setAttribute('data-display', element.style.display);
+                    element.style.display = 'none';
+                }
             });
         },
         set: function (selector, key, value) {
