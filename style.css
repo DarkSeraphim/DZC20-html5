@@ -144,7 +144,7 @@ body {
     padding: 0px 5px;
     cursor: pointer;
 }
-
+/*INBOX*/
 .email-container {
     overflow-y : hidden;
     background: #F7F2C8;
@@ -200,7 +200,8 @@ body {
 .email-read{
     content:url('images/read-email.png');
 }
-.email-item{
+/*INBOX ITEM VIEW*/
+.email-item .email-level-container {
     padding-right: 16px;
     padding-left :8px;
     width: 56%;
@@ -225,6 +226,33 @@ body {
 .email-message{
     white-space: pre;
 }
+/*INBOX ITEM > LEVEL*/
+.email-level-container{
+    margin-top: 32px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.email-level {
+    text-align: center;
+    flex: 1 0 30%;
+}
+.email-level .level-icon {
+    cursor : pointer;
+    display: inline-block;
+    height: 100px;
+    width: 100px;
+    content:url('images/disk.png');
+}
+.level-disabled {
+    filter: grayscale(100%) opacity(50%);
+}
+.level-disabled .level-icon {
+    cursor: default;
+}
+
+/*EMAIL SHORTCUT*/
 .email-shortcut {
     cursor: pointer;
     height: 72px;
@@ -250,6 +278,8 @@ body {
     padding:5px 10px;
     font-size:16px;
 }
+
+/*COMMON CLASSES*/
 .hidden {
     display: none;
 }
