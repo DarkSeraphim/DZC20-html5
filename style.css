@@ -201,7 +201,7 @@ body {
     content:url('images/read-email.png');
 }
 /*INBOX ITEM VIEW*/
-.email-item .email-level-container {
+.email-item, .email-level-container {
     padding-right: 16px;
     padding-left :8px;
     width: 56%;

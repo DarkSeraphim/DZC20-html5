@@ -27,14 +27,27 @@ $(function () {
 var username = 'ahihi';
 var userdata = null;
 
-// Mock-up emails
+// Mock-up assignments and emails
+var assignments = [
+  {
+    "title": "App Programming",
+    "status": 1// 0,1,2
+  }, {
+    "title": "Web Technology",
+    "status": 0
+  }, {
+    "title": "Algorithms",
+    "status": 0
+  }
+];
 var emails = [
   {
     "from": "WhatIsLove_BabyDontHurtMe@tue.nl",
     "title": "Welcome to the Computer Science program at TU/e!",
     "message": "Welcome to our study plaplaplapal",
     "read": false,
-    "time": (new Date()).getTime()
+    "time": (new Date()).getTime(),
+    "assignment": assignments.map(function(value, index){return index;})
   }
 ];
 
@@ -49,17 +62,19 @@ function initialize() {
   var inboxShorcut = document.querySelector(".email-shortcut");
   inboxShorcut.onclick = function () {
     showInbox(true);
+    showMessage(emails[0]); // Show first message
   }
 }
 
 // Adds new email
-function addEmail(from, title, message) {
+function addEmail(from, title, message, assignments) {
   var email = {
     "from": from,
     "title": title,
     "message": message,
     "read": false,
-    "time": (new Date()).getTime()
+    "time": (new Date()).getTime(),
+    "assignment": assignments || []
   }
   emails.push(email);
   updateInbox();
@@ -131,4 +146,36 @@ function showMessage(email) {
   title.textContent = email.title;
   from.textContent = email.from;
   message.textContent = email.message;
+
+  // Updates game level(s)
+  // Remove all game levels
+  var levelList = document.getElementsByClassName('email-level-container')[0];
+  while (levelList.lastChild) {
+    levelList.removeChild(levelList.lastChild);
+  }
+  // Adds levels
+  email.assignment.forEach(function (assId) {
+    if(assId >= assignments.length){
+      throw Error('game.js assignmentId not in range');
+    }
+    var assignment = assignments[assId];
+    var level = document.createElement('div');
+    level.className = 'email-level';
+    if (!assignment.status){
+      level.className += ' level-disabled';
+    }
+    var icon = document.createElement('div');
+    icon.className = 'level-icon';
+    var title = document.createElement('div');
+    title.className = 'level-name';
+    title.textContent = assignment.title;
+    level.appendChild(icon);
+    level.appendChild(title);
+    levelList.appendChild(level);
+    // Registers onclick
+    icon.onclick = function () {
+      if(assignment.status)
+        alert("Clicked on assignment: " + assId);
+    }
+  });
 }
