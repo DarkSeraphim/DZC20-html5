@@ -31,7 +31,7 @@ var userdata = null;
 var assignments = [
   {
     "title": "App Programming",
-    "status": 1// 0,1,2
+    "status": 1// 0 - disabled, 1 - enabled but not passed, 2 - passed
   }, {
     "title": "Web Technology",
     "status": 0
