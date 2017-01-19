@@ -12,13 +12,28 @@ if (typeof StyleHelper === 'undefined') {
 
 (function () {
     // Scope all the thing o/
-    // Mock-up emails
+    // Mock-up emails and assignments
+
+    const ASSIGNMENTS = [
+      {
+        title: 'App Programming',
+        status: 1// 0 - disabled, 1 - enabled but not passed, 2 - passed
+      }, {
+        title: 'Web Technology',
+        status: 0
+      }, {
+        title: 'Algorithms',
+        status: 0
+      }
+    ];
+
     const DEFAULT_EMAILS = [{
         from: 'WhatIsLove_BabyDontHurtMe@tue.nl',
         title: 'Welcome to the Computer Science program at TU/e!',
         message: 'Welcome to our study plaplaplapal',
         read: false,
-        time: (new Date()).getTime()
+        time: (new Date()).getTime(),
+        assignment: ASSIGNMENTS.map((value, index) => index)
     }];
 
     var user;
@@ -49,6 +64,7 @@ if (typeof StyleHelper === 'undefined') {
                 }
             }
             user.emails = user.emails || DEFAULT_EMAILS;
+            updateInbox();
             StyleHelper.hide('#login-modal');
             StyleHelper.show('#taskbar');
             StyleHelper.show('.shortcuts');
@@ -65,9 +81,17 @@ if (typeof StyleHelper === 'undefined') {
             return false;
         });
 
-        EventHelper.on('.closeModalBtn', 'click', (e) => {
+        EventHelper.on('.modal-closeWindowBtn', 'click', (e) => {
+            var cur = (event.target || {parentElement: document.body});
+            while ((cur = cur.parentElement) !== undefined || cur === document.body) {
+                if (cur.classList.contains('modal')) {
+                    break;
+                }
+            }
+            if (cur && cur.id) {
+                StyleHelper.hide('#' + cur.id);
+            }
             e.preventDefault();
-            console.log('close');
             return false;
         });
 
@@ -83,7 +107,6 @@ if (typeof StyleHelper === 'undefined') {
 
         initGameBoard();
         //initialize();
-        //updateInbox();
     });
 
     function updateInbox() {
@@ -149,6 +172,7 @@ if (typeof StyleHelper === 'undefined') {
         var title = document.querySelector('.email-item .email-title h3');
         var from = document.querySelector('.email-item .email-from');
         var message = document.querySelector('.email-item .email-message');
+        console.log(title);
         title.textContent = email.title;
         from.textContent = email.from;
         message.textContent = email.message;
@@ -161,10 +185,10 @@ if (typeof StyleHelper === 'undefined') {
         }
         // Adds levels
         email.assignment.forEach(function (assId) {
-            if(assId >= assignments.length){
+            if(assId >= ASSIGNMENTS.length){
               throw Error('game.js assignmentId not in range');
             }
-            var assignment = assignments[assId];
+            var assignment = ASSIGNMENTS[assId];
             var level = document.createElement('div');
             level.className = 'email-level';
             if (!assignment.status){
