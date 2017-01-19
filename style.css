@@ -40,6 +40,7 @@ body {
 }
 
 #taskbar {
+    z-index: -1;
     position: fixed;
     bottom: 0px;
     left: 0px;
@@ -135,8 +136,118 @@ body {
     color: white;
 }
 
-#assignment-modal .content-title ul li:first-child {
+#assignment-modal .closeWindowBtn {
     background: red;
     border-radius: 5px;
     padding: 0px 5px;
+    cursor: pointer;
+}
+
+.email-container {
+    overflow-y : hidden;
+    background: #F7F2C8;
+    color: #6670AB;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    font-weight: bold;
+    height: 100%;
+    border: 3px solid #989D92;
+}
+.email-banner {
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(152, 157, 146, 0.26);
+}
+.email-title {
+    color: #363B83;
+}
+.email-list{
+    overflow-y: hidden;
+    width: 40%;
+    height: calc(100% - 100px);
+    float: left;
+    border-right: 2px solid rgba(152, 157, 146, 0.26);
+}
+.email-listitem {
+    cursor: pointer;
+    padding-bottom: 20px;
+    padding-right: 16px;
+    min-height: 56px;
+    border-bottom: 2px solid rgba(152, 157, 146, 0.26);
+}
+.email-listitem .email-title{
+    padding-top : 20px;
+    padding-left: 72px;
+}
+.email-date {
+    padding-top: 4px;
+    float : right;
+    font-size: small;
+}
+.email-icon {
+    padding-top : 20px;
+    padding-left: 20px;
+    width: 30px;
+    height: 30px;
+    align-content: center;
+    float: left;
+}
+.email-unread {
+    content:url('images/unread-email.png');
+}
+.email-read{
+    content:url('images/read-email.png');
+}
+.email-item{
+    padding-right: 16px;
+    padding-left :8px;
+    width: 56%;
+    float: right;
+    vertical-align: text-top;
+    overflow-y: hidden;
+}
+.email-item .email-title {
+    font-size: large;
+}
+.email-item .email-title h3 {
+    margin-top: 16px;
+}
+.email-from:before {
+    content:  "From: ";
+}
+.email-from {
+    color: #C34259;
+    margin-bottom: 16px;
+    font-size: small;
+}
+.email-message{
+    white-space: pre;
+}
+.email-shortcut {
+    cursor: pointer;
+    height: 72px;
+    width: 72px;
+    position:absolute;
+    top: 300px;
+    left: 200px;
+}
+.email-shortcut img{
+    z-index: -1;
+    height: 72px;
+    width: 72px;
+    display:inline-block;
+}
+.email-shortcut .email-newmail {
+    position: relative;
+    right: -30px;
+    bottom: -74px;
+    background:red;
+    text-align: center;
+    border-radius: 30px 30px 30px 30px;
+    color:white;
+    padding:5px 10px;
+    font-size:16px;
+}
+.hidden {
+    display: none;
 }
