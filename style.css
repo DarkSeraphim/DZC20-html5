@@ -10,10 +10,9 @@ body {
     color: white;
     font-family: 'Arial';
     background: #314D79;
-
 }
 
-#modal {
+#login-modal {
     margin: auto;
     display: inline-block;
     box-sizing: border-box;
@@ -23,7 +22,7 @@ body {
     width: 20%;
 }
 
-#modal .title {
+#login-modal .title {
     width: 100%;
 }
 
@@ -78,7 +77,6 @@ body {
 }
 
 #assignment-modal {
-    margin-top: 20px;
     width: 800px;
     height: 600px;
     width: 800px;

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="./style.css"/>
+        <style>
+            body {
+                /*background-image: url('./images/desktop-bg.jpg');*/
+            }
+        </style>
+        <script src="./data.js" type="text/javascript"></script>
+        <script src="./helpers.js" type="text/javascript"></script>
+        <script src="./game.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div id="login-modal">
+            <h1 class="title">Sign in</h1>
+            <form>
+                <input type="text" id="username" placeholder="Username" required /><br/>
+                <input type="submit" id="login-button" value="Log In"/>
+            </form>
+        </div>
+        <div id="taskbar" style="display: none;">
+            <ul>
+                <li class="start">Start</li>
+                <li>Button 1</li>
+                <li>Button 2</li>
+            </ul>
+        </div>
+    </body>
+</html>
