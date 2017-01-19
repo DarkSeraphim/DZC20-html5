@@ -61,8 +61,6 @@ function addEmail(from, title, message) {
     "read": false,
     "time": (new Date()).getTime()
   }
-  // Adds to state or storage
-  // TODO
   emails.push(email);
   updateInbox();
 }
@@ -79,9 +77,6 @@ function showInbox(bool) {
 
 // Updates Inbox view
 function updateInbox() {
-  // Gets all mails from storage
-  // TODO
-
   // Removes all mails
   var emailList = document.getElementsByClassName('email-list')[0];
   while (emailList.lastChild) {
