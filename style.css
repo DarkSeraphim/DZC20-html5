@@ -9,8 +9,7 @@ body {
     margin: 0;
     color: white;
     font-family: 'Arial';
-    background: #314D79;
-
+    background: #f7f7f7;
 }
 
 #modal {
@@ -25,19 +24,31 @@ body {
 
 #modal .title {
     width: 100%;
+    color: #343C89;
+    margin-top: 55px;
+}
+
+#logo{
+    max-width: 350px;
 }
 
 #username {
     margin-top: 20px;
     width: 60%;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 5px;
 }
 
 #login-button {
     margin-top: 10px;
-    width: 60%;
+    width: 63%;
     padding: 5px;
+    font-size: 20px;
+    border-radius: 12px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px black;
+    background-color: #343C89;
 }
 
 #taskbar {
@@ -123,7 +134,9 @@ body {
     font-size: 20px;
     cursor: pointer;
 }
-
+#start-menu>ul>li:hover{
+    background-color: #94bff2;
+}
 
 
 #assignment-modal {
@@ -310,18 +323,18 @@ body {
     margin-top: 106px;
     position: relative;
     transform: rotateZ(45deg);
-        -o-transform: rotateZ(45deg);
-        -ms-transform: rotateZ(45deg);
-        -webkit-transform: rotateZ(45deg);
-        -moz-transform: rotateZ(45deg);
+    -o-transform: rotateZ(45deg);
+    -ms-transform: rotateZ(45deg);
+    -webkit-transform: rotateZ(45deg);
+    -moz-transform: rotateZ(45deg);
 }
 .cssload-thecube .cssload-cube {
     position: relative;
     transform: rotateZ(45deg);
-        -o-transform: rotateZ(45deg);
-        -ms-transform: rotateZ(45deg);
-        -webkit-transform: rotateZ(45deg);
-        -moz-transform: rotateZ(45deg);
+    -o-transform: rotateZ(45deg);
+    -ms-transform: rotateZ(45deg);
+    -webkit-transform: rotateZ(45deg);
+    -moz-transform: rotateZ(45deg);
 }
 .cssload-thecube .cssload-cube {
     float: left;
@@ -329,10 +342,10 @@ body {
     height: 50%;
     position: relative;
     transform: scale(1.1);
-        -o-transform: scale(1.1);
-        -ms-transform: scale(1.1);
-        -webkit-transform: scale(1.1);
-        -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
 }
 .cssload-thecube .cssload-cube:before {
     content: "";
@@ -341,7 +354,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgb(255,255,255);
+    background-color: #343C89;
     animation: cssload-fold-thecube 2.76s infinite linear both;
     -o-animation: cssload-fold-thecube 2.76s infinite linear both;
     -ms-animation: cssload-fold-thecube 2.76s infinite linear both;
