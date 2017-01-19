@@ -88,15 +88,43 @@ body {
     bottom: 40px;
     display: none;
     width: 200px;
-    background: white;
-    height: 150px;
+    box-shadow: 0px 0px 6px 0px black;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 10px;
+}
+
+#start-menu ul{
+    list-style-type: none;
+    padding: 0px;
+    text-align: center;
+    background-color: white;
+    height: 100%;
+    border-radius: 10px;
+    margin: 0 auto;
+}
+
+#start-menu>ul>li:first-child{
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
-#start-menu>ul>li{
-    background-color: gray;
-    color: black;
+
+#start-menu>ul>li:last-child{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
+
+#start-menu>ul>li{
+    background-color: #e5e5e5;
+    padding: 20px;
+    color: white;
+    text-shadow: 2px 2px black;
+    font-weight:bold;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
 
 #assignment-modal {
     margin-top: 20px;
