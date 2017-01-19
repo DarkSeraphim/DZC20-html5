@@ -50,6 +50,11 @@ function initialize() {
   inboxShorcut.onclick = function () {
     showInbox(true);
   }
+
+  var startBtn = document.querySelector(".start");
+  startBtn.onclick = function(){
+    toggleStartMenu();
+  }
 }
 
 // Adds new email
@@ -136,4 +141,19 @@ function showMessage(email) {
   title.textContent = email.title;
   from.textContent = email.from;
   message.textContent = email.message;
+}
+
+//Goes back to login screen
+function logOut(){
+  window.location.href='index.html';
+}
+
+//Shows/hides start menu
+function toggleStartMenu(){
+  var startMenu = document.querySelector("#start-menu");
+  if(startMenu.style.display == 'block'){
+    startMenu.style.display = 'none';
+    return;
+  } 
+  startMenu.style.display = 'block';
 }
