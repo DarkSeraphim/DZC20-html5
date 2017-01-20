@@ -37,7 +37,22 @@ window.StyleHelper = (function () {
                 element.style[key] = value;
             });
         },
-
+        fadeOut: function(selector, step, cb) {
+            var fadeTarget = document.querySelector(selector);
+            var fadeEffect = setInterval(function () {
+                if (!fadeTarget.style.opacity) {
+                    fadeTarget.style.opacity = 1;
+                }
+                if (fadeTarget.style.opacity < 0.1) {
+                    fadeTarget.style.display = 'none';
+                    if (cb)
+                        cb();
+                    clearInterval(fadeEffect);
+                } else {
+                    fadeTarget.style.opacity -= 0.05;
+                }
+            }, step);
+        },
     };
 }) ();
 

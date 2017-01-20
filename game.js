@@ -63,12 +63,20 @@ if (typeof StyleHelper === 'undefined') {
                     throw new Error('Failed to create new user');
                 }
             }
-            user.emails = user.emails || DEFAULT_EMAILS;
-            updateInbox();
-            StyleHelper.hide('#login-modal');
-            StyleHelper.show('#taskbar');
-            StyleHelper.show('.shortcuts');
-            StyleHelper.set('body', 'backgroundImage', 'url(./images/desktop-bg.jpg)');
+
+            StyleHelper.fadeOut('#login-modal', 15, function(){
+                StyleHelper.show('#loader');
+            });
+
+            setTimeout(function(){ 
+                user.emails = user.emails || DEFAULT_EMAILS;
+                updateInbox();  
+                StyleHelper.hide('#loader');          
+                StyleHelper.show('#taskbar');
+                StyleHelper.show('.shortcuts');
+                StyleHelper.set('body', 'backgroundImage', 'url(./images/desktop-bg.jpg)');
+            }, 3000);
+
             return false;
         });
         EventHelper.on('.start', 'click', (e) => {
