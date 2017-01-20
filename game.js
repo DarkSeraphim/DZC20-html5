@@ -110,7 +110,8 @@ if (typeof StyleHelper === 'undefined') {
             containment: 'parent'
         });
 
-        initGameBoard();
+        // TODO: load level?
+        initGameBoard([], []);
         //initialize();
     });
 
@@ -216,7 +217,31 @@ if (typeof StyleHelper === 'undefined') {
           });
     }
 
-    function initGameBoard() {
+    function initGameBoard(tiles, slots) {
+
+        var tileContainer = document.querySelector('#tiles');
+        var slotContainer = document.querySelector('#puzzle');
+        slots.forEach(slot => {
+            //<div class="snap-target" data-key="1"></div>
+            var div = document.createElement('div');
+            div.setAttribute('class', 'snap-target');
+            div.setAttribute('data-key', slot.id);
+            // TODO: set x, y to match level
+            slotContainer.appendChild(div);
+        });
+
+        tiles.forEach(tile => {
+            // TODO: flexbox this one, with wrap and left align
+            // <div class="tile" data-key="A"><span>A</span></div>
+            var div = document.createElement('div');
+            div.setAttribute('class', 'tile');
+            div.setAttribute('data-key', tile.id);
+            var span = document.createElement('span');
+            span.textContent = tile.description;
+            div.appendChild(span);
+            tileContainer.appendChild(div);
+        });
+
         $('.tile').draggable({
             containment: '.modal-content',
             snap: '.snap-target',
@@ -267,6 +292,11 @@ if (typeof StyleHelper === 'undefined') {
                     delete current[slot];
                 }
             }
+        });
+
+        EventHelper.on('#puzzle-validate button', 'click', (e) => {
+            e.preventDefault();
+            // Use `current` to verify whether the solution is valid 
         });
     }
 
