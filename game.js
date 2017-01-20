@@ -94,6 +94,10 @@ if (typeof StyleHelper === 'undefined') {
             StyleHelper.hide('#start-menu');
         });
 
+        EventHelper.on('#puzzle-validate', 'click', (e) => {
+            alert('You fucked up m8!!');
+        });
+
         EventHelper.on('.modal-closeWindowBtn', 'click', (e) => {
             var cur = (event.target || {parentElement: document.body});
             while ((cur = cur.parentElement) !== undefined || cur === document.body) {

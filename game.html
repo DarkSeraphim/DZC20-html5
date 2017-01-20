@@ -3,6 +3,7 @@
     <head>
         <link rel="stylesheet" href="./style.css"/>
         <link rel="stylesheet" href="./loader.css"/>
+        <link rel="stylesheet" href="./circle.css"/>
         <style>
             body {
                 /*background-image: url('./images/desktop-bg.jpg');*/
@@ -47,17 +48,40 @@
                     </ul>
                 </div>
                 <div class="modal-content">
+                    <div id="input-wrapper">
+                        <div class="round-border dark-bg">
+                            <p>Input</p>
+                            <div id="input">
+                                <div class="input-box">4</div>
+                                <div class="input-box">1</div>
+                                <div class="input-box">7</div>
+                                <div class="input-box">2</div>
+                                <div class="input-box">3</div>
+                                <div class="input-box">6</div>
+                                <div class="input-box">9</div>
+                                <div class="input-box">8</div>
+                                <div class="input-box">11</div>
+                                <div class="input-box">12</div>
+                            </div>
+                        </div>
+                    </div>
                     <div id="puzzle">
                         <div class="snap-target" data-key="1"></div>
                         <div class="snap-target" data-key="2"></div>
+                        <div class="snap-target" data-key="3"></div>
                     </div>
-                    <div id="input">
+                    <div id="circle-wrapper">
+                        <div class="circle"></div>
+                    </div>
+                    <div id="tiles-wrapper">
                         <div id="tiles">
                             <div class="tile" data-key="A"><span>A</span></div>
                             <div class="tile" data-key="B"><span>B</span></div>
+                            <div class="tile" data-key="C"><span>C</span></div>
+                            <div class="tile" data-key="D"><span>D</span></div>
                         </div>
                         <div id="puzzle-validate">
-                            <button>Try it!</button>
+                            <button>Run!</button>
                         </div>
                     </div>
                 </div>
