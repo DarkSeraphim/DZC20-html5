@@ -31,17 +31,25 @@
                     </div>
                     <div class="email-list">
                         <div class="email-listitem">
-                            <div class="email-icon email-unread">
-                            </div>
+                            <div class="email-icon email-unread"></div>
                             <div class="email-title">Template email item</div>
                             <!--<div class="email-date">01:58am 17/01/2017</div>-->
                         </div>
                     </div>
                     <div class="email-item">
-                        <div class="email-title"><h3>Welcome to the Computer Science program at TU/e!</h3></div>
-                        <div class="email-from">WhatIsLove_BabyDontHurtMe@tue.nl</div>
-                        <div class="email-message">Welcome to our study plaplaplapal</div>
-                        <div class="assignments-overview"></div>
+                        <div class="email-title"><h3></h3></div>
+                        <div class="email-from"></div>
+                        <div class="email-message"></div>
+                    </div>
+                    <div class="email-level-container">
+                        <div class="email-level">
+                            <div class="level-icon"></div>
+                            <div class="level-name">App Programming</div>
+                        </div>
+                        <div class="email-level level-disabled">
+                            <div class="level-icon"></div>
+                            <div class="level-name">Web Technology</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -60,7 +68,8 @@
         </div>
         <script type="text/javascript">
             $('#assignment-modal').draggable({
-                handle: '.content-title'
+                handle: '.content-title',
+                containment: 'parent'
             });
         </script>
     </body>
