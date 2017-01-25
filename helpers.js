@@ -45,8 +45,9 @@ window.StyleHelper = (function () {
                 }
                 if (fadeTarget.style.opacity < 0.1) {
                     fadeTarget.style.display = 'none';
-                    if (cb)
+                    if (cb) {
                         cb();
+                    }
                     clearInterval(fadeEffect);
                 } else {
                     fadeTarget.style.opacity -= 0.05;
@@ -65,7 +66,19 @@ window.EventHelper = (function () {
     return {
         on: function (selector, event, func) {
             select(selector, element => {
-                element['on' + event] = func;
+                let key = 'on' + event;
+                if (typeof element[key] === 'function') {
+                    let first = element[key];
+                    let second = func;
+                    func = function () {
+                        try {
+                            first();
+                        } finally {
+                            second();
+                        }
+                    };
+                }
+                element[key] = func;
             });
         },
         off: function (selector, event) {

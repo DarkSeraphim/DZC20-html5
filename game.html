@@ -13,7 +13,7 @@
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="./data.js" type="text/javascript"></script>
         <script src="./helpers.js" type="text/javascript"></script>
-        <script src="./explosion.js" type="text/javascript"></script>
+        <!--script src="./explosion.js" type="text/javascript"></script-->
         <script src="./game.js" type="text/javascript"></script>
     </head>
     <body>
@@ -67,9 +67,9 @@
                         </div>
                     </div>
                     <div id="puzzle">
-                        <div class="snap-target" data-key="1"></div>
-                        <div class="snap-target" data-key="2"></div>
-                        <div class="snap-target" data-key="3"></div>
+                        <div class="slot snap-target" data-key="1"></div>
+                        <div class="slot snap-target" data-key="2"></div>
+                        <div class="slot snap-target" data-key="3"></div>
                     </div>
                     <div id="circle-wrapper" onclick="goKaput(5, 300)">
                         <div class="circle"></div>                        
@@ -77,10 +77,26 @@
                     </div>
                     <div id="tiles-wrapper">
                         <div id="tiles">
-                            <div class="tile" data-key="A"><span>A</span></div>
-                            <div class="tile" data-key="B"><span>B</span></div>
-                            <div class="tile" data-key="C"><span>C</span></div>
-                            <div class="tile" data-key="D"><span>D</span></div>
+                            <ul>
+                                <li>
+                                    <div class="tile" data-key="A">
+                                        <span>A</span>
+                                        <div class="snap-target" data-key="4"></div>
+                                        <span>B</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="tile" data-key="B">
+                                        <span>B</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="tile" data-key="C"><span>C</span></div>
+                                </li>
+                                <li>
+                                    <div class="tile" data-key="D"><span>D</span></div>
+                                </li>
+                            </ul>
                         </div>
                         <div id="puzzle-validate">
                             <button>Run!</button>
