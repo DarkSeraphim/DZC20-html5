@@ -76,6 +76,7 @@ if (typeof StyleHelper === 'undefined') {
                 StyleHelper.show('#taskbar');
                 StyleHelper.show('.shortcuts');
                 StyleHelper.set('body', 'backgroundImage', 'url(./images/desktop-bg.jpg)');
+                AudioHelper.play('startup');
             }, 3000);
 
             return false;
@@ -83,17 +84,26 @@ if (typeof StyleHelper === 'undefined') {
         EventHelper.on('.start', 'click', (e) => {
             e.preventDefault();
             StyleHelper.toggle('#start-menu');
-        });
+        }); 
         EventHelper.on('#log-out', 'click', (e) => {
             e.preventDefault();
             logOut();
+            StyleHelper.hide('#start-menu');
             return false;
         });
-        EventHelper.on('#start-menu', 'click', (e) => {
+        EventHelper.on('#mute-toggle-wrapper', 'click', (e) => {
             e.preventDefault();
-            e.stopPropagation();
-            StyleHelper.hide('#start-menu');
+            var isMuted = DOMHelper.getProperty('#mute-toggle', 'checked');
+            AudioHelper.toggleMute();
+            DOMHelper.setProperty('#mute-toggle', 'checked', !isMuted);
         });
+
+        //This was breaking the muting sound checkbox
+        // EventHelper.on('#start-menu', 'click', (e) => {
+        //     e.preventDefault();
+        //     e.stopPropagation();
+        //     StyleHelper.hide('#start-menu');
+        // });
 
         EventHelper.on('#puzzle-validate', 'click', (_) => {
             alert('You fucked up m8!!');

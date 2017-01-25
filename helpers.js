@@ -159,6 +159,14 @@ window.AudioHelper = (function(){
             this.pause(sound);
             this.resetTime(sound);
             this.play(sound);
+        },
+
+        isMuted: function(){
+            return isMuted;
+        }, 
+
+        toggleMute: function(){
+            isMuted = !isMuted;
         }
     }
 }) ();
