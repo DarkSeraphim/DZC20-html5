@@ -40,6 +40,7 @@ if (typeof StyleHelper === 'undefined') {
     var logOut = function () {
         StyleHelper.hide('#taskbar');
         StyleHelper.show('#login-modal');
+        StyleHelper.set('#login-modal', 'opacity', 1);
         StyleHelper.hide('.shortcuts');
         UserData.save(user.name, user);
         StyleHelper.set('body', 'backgroundImage', '');
