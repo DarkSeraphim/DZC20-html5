@@ -105,10 +105,6 @@ if (typeof StyleHelper === 'undefined') {
         //     StyleHelper.hide('#start-menu');
         // });
 
-        EventHelper.on('#puzzle-validate', 'click', (_) => {
-            alert('You fucked up m8!!');
-        });
-
         EventHelper.on('.modal-closeWindowBtn', 'click', (e) => {
             var cur = (event.target || {parentElement: document.body});
             while ((cur = cur.parentElement) !== undefined || cur === document.body) {
@@ -372,10 +368,18 @@ if (typeof StyleHelper === 'undefined') {
 
         $('.slot.snap-target').droppable('option', 'disabled', false);
 
-        console.log('hey there');
         EventHelper.on('#puzzle-validate button', 'click', (e) => {
             e.preventDefault();
-            alert('Hey there');
+            // goKaput(5, 300); //Triggers explosion of the circle
+
+            //This should only happen when the code is wrong:
+            var selector = '#assignment-modal .modal-transparent';
+            StyleHelper.set(selector, 'border', '2px solid red');
+            AudioHelper.play('buzzer');
+            $( "#assignment-modal" ).effect( "shake", {}, null, function(){
+                StyleHelper.set(selector, 'border', '');
+            } );
+
             // Use `current` to verify whether the solution is valid 
         });
     }

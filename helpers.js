@@ -130,7 +130,7 @@ window.AudioHelper = (function(){
             loadSound(sound, format);
         });
     }
-    var soundsToLoad = ['boom', 'shortBoom', 'startup'];
+    var soundsToLoad = ['boom', 'shortBoom', 'startup', 'buzzer'];
     loadSounds(soundsToLoad, 'mp3');
 
     return {
