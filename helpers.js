@@ -115,6 +115,62 @@ window.DOMHelper = (function () {
     };
 }) ();
 
+window.AudioHelper = (function(){
+    var sounds = {};
+    var isMuted = false;
+
+    //Loads a single sound
+    var loadSound = function(sound, format){
+        sounds[sound] = new Audio('./audio/' + sound + '.' + format);
+    }
+
+    //Loads all the sounds in the provided array. The given format applies to all the sounds
+    var loadSounds = function(sounds, format){
+        sounds.forEach(function(sound){
+            loadSound(sound, format);
+        });
+    }
+    var soundsToLoad = ['boom', 'shortBoom', 'startup', 'buzzer'];
+    loadSounds(soundsToLoad, 'mp3');
+
+    return {
+        load: function(sound, format){
+            load(sound, format);
+        },
+
+        play: function(sound){
+            if (!isMuted)
+                sounds[sound].play();
+        },
+
+        pause: function(sound){
+            sounds[sound].pause();
+        },
+
+        setCurrentTime: function(sound, time){
+            sounds[sound].currentTime = time;
+        },
+
+        resetTime: function(sound){
+            this.setCurrentTime(sound, 0);
+        },
+
+        restart: function(sound){
+            this.pause(sound);
+            this.resetTime(sound);
+            this.play(sound);
+        },
+
+        isMuted: function(){
+            return isMuted;
+        }, 
+
+        toggleMute: function(){
+            isMuted = !isMuted;
+        }
+    }
+}) ();
+
 (function () {
     var queue = [];
     var isReady;

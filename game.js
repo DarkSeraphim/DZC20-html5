@@ -40,6 +40,7 @@ if (typeof StyleHelper === 'undefined') {
     var logOut = function () {
         StyleHelper.hide('#taskbar');
         StyleHelper.show('#login-modal');
+        StyleHelper.set('#login-modal', 'opacity', 1);
         StyleHelper.hide('.shortcuts');
         UserData.save(user.name, user);
         StyleHelper.set('body', 'backgroundImage', '');
@@ -75,6 +76,7 @@ if (typeof StyleHelper === 'undefined') {
                 StyleHelper.show('#taskbar');
                 StyleHelper.show('.shortcuts');
                 StyleHelper.set('body', 'backgroundImage', 'url(./images/desktop-bg.jpg)');
+                AudioHelper.play('startup');
             }, 3000);
 
             return false;
@@ -82,21 +84,26 @@ if (typeof StyleHelper === 'undefined') {
         EventHelper.on('.start', 'click', (e) => {
             e.preventDefault();
             StyleHelper.toggle('#start-menu');
-        });
+        }); 
         EventHelper.on('#log-out', 'click', (e) => {
             e.preventDefault();
             logOut();
+            StyleHelper.hide('#start-menu');
             return false;
         });
-        EventHelper.on('#start-menu', 'click', (e) => {
+        EventHelper.on('#mute-toggle-wrapper', 'click', (e) => {
             e.preventDefault();
-            e.stopPropagation();
-            StyleHelper.hide('#start-menu');
+            var isMuted = DOMHelper.getProperty('#mute-toggle', 'checked');
+            AudioHelper.toggleMute();
+            DOMHelper.setProperty('#mute-toggle', 'checked', !isMuted);
         });
 
-        EventHelper.on('#puzzle-validate', 'click', (_) => {
-            alert('You fucked up m8!!');
-        });
+        //This was breaking the muting sound checkbox
+        // EventHelper.on('#start-menu', 'click', (e) => {
+        //     e.preventDefault();
+        //     e.stopPropagation();
+        //     StyleHelper.hide('#start-menu');
+        // });
 
         EventHelper.on('.modal-closeWindowBtn', 'click', (e) => {
             var cur = (event.target || {parentElement: document.body});
@@ -390,7 +397,16 @@ if (typeof StyleHelper === 'undefined') {
 
         EventHelper.on('#puzzle-validate button', 'click', (e) => {
             e.preventDefault();
-            alert('Hey there');
+            // goKaput(5, 300); //Triggers explosion of the circle
+
+            //This should only happen when the code is wrong:
+            var selector = '#assignment-modal .modal-transparent';
+            StyleHelper.set(selector, 'border', '2px solid red');
+            AudioHelper.restart('buzzer');
+            $( "#assignment-modal" ).effect( "shake", {}, null, function(){
+                StyleHelper.set(selector, 'border', '');
+            } );
+
             // Use `current` to verify whether the solution is valid 
         });
     }
