@@ -375,7 +375,7 @@ if (typeof StyleHelper === 'undefined') {
             //This should only happen when the code is wrong:
             var selector = '#assignment-modal .modal-transparent';
             StyleHelper.set(selector, 'border', '2px solid red');
-            AudioHelper.play('buzzer');
+            AudioHelper.restart('buzzer');
             $( "#assignment-modal" ).effect( "shake", {}, null, function(){
                 StyleHelper.set(selector, 'border', '');
             } );
