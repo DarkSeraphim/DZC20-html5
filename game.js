@@ -94,7 +94,7 @@ if (typeof StyleHelper === 'undefined') {
             StyleHelper.hide('#start-menu');
         });
 
-        EventHelper.on('#puzzle-validate', 'click', (e) => {
+        EventHelper.on('#puzzle-validate', 'click', (_) => {
             alert('You fucked up m8!!');
         });
 
@@ -125,6 +125,8 @@ if (typeof StyleHelper === 'undefined') {
         // TODO: load level?
         initGameBoard([], []);
         //initialize();
+        DOMHelper.setProperty('#username', 'value', 'DarkSeraphim');
+        document.querySelector('form').onsubmit({preventDefault: _=>{}});
     });
 
     function updateInbox() {
@@ -190,7 +192,6 @@ if (typeof StyleHelper === 'undefined') {
         var title = document.querySelector('.email-item .email-title h3');
         var from = document.querySelector('.email-item .email-from');
         var message = document.querySelector('.email-item .email-message');
-        console.log(title);
         title.textContent = email.title;
         from.textContent = email.from;
         message.textContent = email.message;
@@ -264,10 +265,9 @@ if (typeof StyleHelper === 'undefined') {
                 // $(this).data("draggable")
                 // on 2.x versions of jQuery use "ui-draggable"
                 // $(this).data("ui-draggable")
-                $(this).data('uiDraggable').originalPosition = {
-                    top : 0,
-                    left : 0
-                };
+                if (!event) {
+                    resetDraggable(this);                    
+                }
                 // return boolean
                 return !event;
                 // that evaluate like this:
@@ -279,35 +279,92 @@ if (typeof StyleHelper === 'undefined') {
 
         };
 
+        window.debugC = current;
+
+        var resetDraggable = element => {
+            $(element).data('uiDraggable').originalPosition = {
+                top : 0,
+                left : 0
+            };
+            let revertDuration = $(element).draggable('option', 'revertDuration') || 10;
+
+            $(element).animate({top: 0, left: 0}, parseInt(revertDuration), function() {
+                $(element).removeClass('ui-draggable-dragging');
+            });
+
+            var data = $(element).data('key');
+            for (var key in current) {
+                if (current.hasOwnProperty(key) && current[key] === data) {
+                    delete current[key];
+                    break;
+                } 
+            }
+
+            StyleHelper.set('.tile[data-key=' + data + ']', 'width', '');
+            StyleHelper.set('.tile[data-key=' + data + ']', 'height', '');
+            document.querySelectorAll('.tile[data-key=' + data + '] > .snap-target').forEach(element => {
+                resetDroppable(element);
+            });
+        };
+
+        var resetDroppable = element => {
+            var slot = $(element).data('key');          
+            // alert(tile + ' was dragged out of ' + slot);  
+            var child;
+            if (current[slot]) {
+                child = current[slot];
+            }
+
+            if (!$(element).hasClass('slot')) {
+               $(element).droppable('option', 'disabled', true);
+            }
+            // $($.ui.draggable).find('.snap-target').droppable('option', 'disabled', true);
+
+            let tile = document.querySelector('.tile[data-key=' + child + ']');
+            if (tile) {
+                resetDraggable(tile);
+            }
+        };
+
         $('.snap-target').droppable({
+            disabled: true,
             accept: function (element) {
                 if (!$(element).hasClass('tile')) {
                     return false;
                 }
                 var slot = $(this).data('key');
                 var tile = $(element).data('key');
+                var DOMSlot = document.querySelector('.snap-target[data-key="'+slot+'"]');
+                while ((DOMSlot = DOMSlot.parentElement) !== document.body) {
+                    if (DOMSlot.classList.contains('tile')) {
+                        if (tile === DOMSlot.getAttribute('data-key')) {
+                            return false;
+                        }
+                    }
+                }
                 return current[slot] === undefined || current[slot] === tile;
             },
             drop: function (event, ui) {
                 var slot = $(this).data('key');
                 var tile = $(ui.draggable).data('key');
                 current[slot] = tile;
-                // alert(tile + ' was placed on ' + slot); 
-                ui.draggable.position({of: $(this)});
+                var draggable = ui.draggable;
+                $(draggable).css({
+                    width: $(this).css('width'),
+                    height: $(this).css('height')
+                });
+                draggable.position({of: $(this)});
+                $(draggable).find('.snap-target').droppable('option', 'disabled', false);
                 return false;
-            },
-            out: function (event, ui) {
-                var slot = $(this).data('key');
-                var tile = $(ui.draggable).data('key');
-                // alert(tile + ' was dragged out of ' + slot);  
-                if (current[slot] === tile) {
-                    delete current[slot];
-                }
             }
         });
 
+        $('.slot.snap-target').droppable('option', 'disabled', false);
+
+        console.log('hey there');
         EventHelper.on('#puzzle-validate button', 'click', (e) => {
             e.preventDefault();
+            alert('Hey there');
             // Use `current` to verify whether the solution is valid 
         });
     }
