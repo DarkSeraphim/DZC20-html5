@@ -279,6 +279,14 @@ if (typeof StyleHelper === 'undefined') {
 
         };
 
+        var findTile = tile => {
+            for (var key in current) {
+                if (current.hasOwnProperty(key) && current[key] === tile) {
+                    return key;
+                } 
+            }
+        };
+
         window.debugC = current;
 
         var resetDraggable = element => {
@@ -293,12 +301,16 @@ if (typeof StyleHelper === 'undefined') {
             });
 
             var data = $(element).data('key');
-            for (var key in current) {
+            var key = findTile(data);
+            if (key) {
+                delete current[key];
+            }
+            /*for (var key in current) {
                 if (current.hasOwnProperty(key) && current[key] === data) {
                     delete current[key];
                     break;
                 } 
-            }
+            }*/
 
             StyleHelper.set('.tile[data-key=' + data + ']', 'width', '');
             StyleHelper.set('.tile[data-key=' + data + ']', 'height', '');
@@ -313,6 +325,7 @@ if (typeof StyleHelper === 'undefined') {
             var child;
             if (current[slot]) {
                 child = current[slot];
+                console.log('Child: ' + child);
             }
 
             if (!$(element).hasClass('slot')) {
@@ -347,6 +360,12 @@ if (typeof StyleHelper === 'undefined') {
             drop: function (event, ui) {
                 var slot = $(this).data('key');
                 var tile = $(ui.draggable).data('key');
+                var key = findTile(tile);
+                /*if (key) {
+                    console.log('Try to reset ' + key);
+                    resetDroppable($('.snap-target[data-key="' + key + '"]'));
+                }*/
+                delete current[key];
                 current[slot] = tile;
                 var draggable = ui.draggable;
                 $(draggable).css({
@@ -356,12 +375,19 @@ if (typeof StyleHelper === 'undefined') {
                 draggable.position({of: $(this)});
                 $(draggable).find('.snap-target').droppable('option', 'disabled', false);
                 return false;
+            },
+            out: function (event, ui) {
+                var tile = $(ui.draggable).data('key');
+                StyleHelper.set('.tile[data-key="' + tile + '"]', 'width', '');
+                StyleHelper.set('.tile[data-key="' + tile + '"]', 'height', '');
+                document.querySelectorAll('.tile[data-key="' + tile + '"] .snap-target').forEach(e => {
+                    resetDroppable(e);
+                });
             }
         });
 
         $('.slot.snap-target').droppable('option', 'disabled', false);
 
-        console.log('hey there');
         EventHelper.on('#puzzle-validate button', 'click', (e) => {
             e.preventDefault();
             alert('Hey there');
