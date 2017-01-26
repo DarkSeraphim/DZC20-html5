@@ -54,6 +54,23 @@ window.StyleHelper = (function () {
                 }
             }, step);
         },
+
+        setSpyMode: function(bool){
+            if (bool) {
+                AudioHelper.play('hackerMusic3');
+                this.set('body', 'background-image', "url('./images/wallpaper-csi.jpg')");
+                this.set('.modal-transparent', 'background', "url('./images/wallpaper-csi.jpg')");
+                DOMHelper.setAttribute('.email-banner img', 'src', './images/inbox-banner-spy.png');
+                document.querySelector('#spy-mode-css').removeAttribute('disabled');
+            } else {
+                AudioHelper.stop('hackerMusic3');
+                this.set('body', 'background-image', "url('./images/desktop-bg.jpg')");
+                this.set('.modal-transparent', 'background', "url('./images/desktop-bg.jpg')");
+                this.set('#spy-mode-css', 'disabled', 'true');
+                DOMHelper.setAttribute('.email-banner img', 'src', './images/inbox-banner.png');
+                DOMHelper.setAttribute('#spy-mode-css', 'disabled', true);
+            }
+        }
     };
 }) ();
 
@@ -129,8 +146,16 @@ window.AudioHelper = (function(){
         sounds.forEach(function(sound){
             loadSound(sound, format);
         });
-    };
-    var soundsToLoad = ['boom', 'shortBoom', 'startup', 'buzzer'];
+    }
+    var soundsToLoad = [
+        'boom', 
+        'shortBoom', 
+        'startup', 
+        'buzzer', 
+        'hackerMusic1',
+        'hackerMusic3'
+    ];
+
     loadSounds(soundsToLoad, 'mp3');
 
     return {
@@ -147,6 +172,11 @@ window.AudioHelper = (function(){
 
         pause: function(sound){
             sounds[sound].pause();
+        },
+
+        stop: function(sound){
+            sounds[sound].pause();
+            sounds[sound].currentTime = 0;
         },
 
         setCurrentTime: function(sound, time){
@@ -167,7 +197,26 @@ window.AudioHelper = (function(){
             return isMuted;
         }, 
 
+        muteAll: function(){
+            for (var key in sounds){
+                sounds[key].pause();
+            }
+        },
+
+        stopAll: function(){
+            for (var key in sounds){
+                sounds[key].pause();
+                sounds[key].currentTime = 0;
+            }
+        },
+
         toggleMute: function(){
+            //TODO: save the currently playing background song and resume it
+            if (isMuted) {         
+                // sounds['hackerMusic3'].play();
+            } else {
+                this.muteAll();
+            }
             isMuted = !isMuted;
         }
     };
