@@ -181,11 +181,15 @@ if (typeof StyleHelper === 'undefined') {
 
   // Add a new email to inbox after 2 seconds and update assignment status
   function activateAssignment(assId) {
+    if (assId > user.assignments.length) {
+      throw Error('No such assignment with that assId exist');
+    }
     let assignment = user.assignments[assId];
     assignment.status = 1;
     let email = Object.assign({ read: false, time: (new Date()).getTime() }, assignment.email);
     user.emails.push(email);
     setTimeout(() => {
+      AudioHelper.play('email');
       updateInbox();
       showMessage(user.emails[0]);
     }, 2000);
@@ -240,7 +244,7 @@ if (typeof StyleHelper === 'undefined') {
             showMessage(linkedAssignmentEmail);
             updateInbox();
           } else {
-            if (assignment.hidden) {
+            if (assignment.email.hidden) {
               StyleHelper.setSpyMode(true);
             }
             showGameBoard(assId, true);
@@ -452,12 +456,12 @@ if (typeof StyleHelper === 'undefined') {
         var delay = 2500;
         try {
           AudioHelper.play('beatLevel');
-          setTimeout(function(){ 
-              goKaput(5, 300);
+          setTimeout(function () {
+            goKaput(5, 300);
           }, delay);
-        } finally {          
-          setTimeout(function(){ 
-              callback();
+        } finally {
+          setTimeout(function () {
+            callback();
           }, delay + 2500);
         }
       } else {
@@ -475,8 +479,11 @@ if (typeof StyleHelper === 'undefined') {
     if (bool) {
       let assignment = user.assignments[assId];
       initGameBoard(assignment.slots, assignment.tiles, assignment.solution, () => {
-        assignment.status = 2;
-        activateAssignment(user.assignments.indexOf(assignment) + 1);
+        if (assignment.status != 2) {
+          assignment.status = 2;
+          activateAssignment(user.assignments.indexOf(assignment) + 1);
+        }
+        // TODO: Replay or Close window box here!
       });
       StyleHelper.show('#assignment-modal');
 

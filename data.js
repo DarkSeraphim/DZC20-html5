@@ -79,14 +79,52 @@ const ASSIGNMENTS = [
     }],
     solution: { 1: 'A' }
   }, {
-    title: 'Web Technology',
+    title: 'Hacking Wifi',
     status: 0,
     email: {
-      from: 'WhatIsLove_BabyDontHurtMe@tue.nl',
-      title: 'Well done! Web Technology assignment ready!',
-      message: 'Very good job. You now need a website to showcase all your shits man ;)',
-      assignment: [1]
-    }
+      from: 'superdeepweb@thisisthedeepestweb.onion',
+      title: 'Yo yo! Wanna earn some money bro!?',
+      message: 'Hey yo! Recently I got bored with my assignments. If you do it for me, I could pay you some real cash! Interested!?',
+      assignment: [1],
+      hidden: true
+    },
+    slots: [{
+      id: '1'
+    }, {
+      id: '2'
+    }, {
+      id: '3'
+    }],
+    tiles: [{
+      id: 'A',
+      text: [
+        'for (i = 0; i < 9; i++) {',
+        { id: '4' },
+        '}'
+      ]
+    }, {
+      id: 'B',
+      text: [
+        'if (i % 2 == 0) {',
+        { id: '5' },
+        '} else {',
+        { id: '6' },
+        '}'
+      ]
+    }, {
+      id: 'C',
+      text: ['x = x + 1']
+    }, {
+      id: 'D',
+      text: ['y = y + 1']
+    }, {
+      id: 'E',
+      text: ['x = x + 5']
+    }, {
+      id: 'F',
+      text: ['y = x + y']
+    }],
+    solution: { 1: 'A' }
   }, {
     title: 'Algorithms',
     status: 0,
@@ -95,17 +133,44 @@ const ASSIGNMENTS = [
       title: 'Algorithms is hard! Get ready for the exam',
       message: 'You should not underestimate this course at all!',
       assignment: [2]
-    }
-  }, {
-    title: 'Hacking Wifi',
-    status: 0,
-    email: {
-      from: 'superdeepweb@thisisthedeepestweb.onion',
-      title: 'Yo yo! Wanna earn some money bro!?',
-      message: 'Hey yo! Recently I got bored with my assignments. If you do it for me, I could pay you some real cash! Interested!?',
-      assignment: [3],
-      hidden: true
-    }
+    },
+    slots: [{
+      id: '1'
+    }, {
+      id: '2'
+    }, {
+      id: '3'
+    }],
+    tiles: [{
+      id: 'A',
+      text: [
+        'for (i = 0; i < 9; i++) {',
+        { id: '4' },
+        '}'
+      ]
+    }, {
+      id: 'B',
+      text: [
+        'if (i % 2 == 0) {',
+        { id: '5' },
+        '} else {',
+        { id: '6' },
+        '}'
+      ]
+    }, {
+      id: 'C',
+      text: ['x = x + 1']
+    }, {
+      id: 'D',
+      text: ['y = y + 1']
+    }, {
+      id: 'E',
+      text: ['x = x + 5']
+    }, {
+      id: 'F',
+      text: ['y = x + y']
+    }],
+    solution: { 1: 'A' }
   }
 ];
 
