@@ -1,3 +1,5 @@
+'use strict';
+
 var UserData = (function () {
   return {
     get: function () {
@@ -74,7 +76,8 @@ const ASSIGNMENTS = [
     }, {
       id: 'F',
       text: ['y = x + y']
-    }]
+    }],
+    solution: { 1: 'A' }
   }, {
     title: 'Web Technology',
     status: 0,
