@@ -56,7 +56,7 @@ if (typeof StyleHelper === 'undefined') {
         StyleHelper.show('.shortcuts');
         StyleHelper.set('body', 'backgroundImage', 'url(./images/desktop-bg.jpg)');
         AudioHelper.play('startup');
-      }, 3000);
+      }, 0);
       return false;
     });
 
@@ -180,23 +180,28 @@ if (typeof StyleHelper === 'undefined') {
   }
 
   // Add a new email to inbox after 2 seconds and update assignment status
-  function activateAssignment(assId) {
-    if (assId > user.assignments.length) {
+  function activateAssignment(assId, delay = 0) {
+    if (assId >= user.assignments.length) {
       throw Error('No such assignment with that assId exist');
     }
     let assignment = user.assignments[assId];
     assignment.status = 1;
-    let email = Object.assign({ read: false, time: (new Date()).getTime() }, assignment.email);
+    let email = Object.assign({ read: false }, assignment.email);
+    if (user.emails.find((e) => e.title == email.title)) {
+      return;
+    }
     user.emails.push(email);
     setTimeout(() => {
       AudioHelper.play('email');
       updateInbox();
-      showMessage(user.emails[0]);
-    }, 2000);
+    }, delay);
   }
 
   function showMessage(email) {
-    email.read = true;
+    let emailWindow = document.querySelector('#email-modal');
+    if (emailWindow.style.display != 'none') {
+      email.read = true;
+    }
     let title = document.querySelector('.email-item .email-title h3');
     let from = document.querySelector('.email-item .email-from');
     let message = document.querySelector('.email-item .email-message');
@@ -231,26 +236,39 @@ if (typeof StyleHelper === 'undefined') {
       let title = document.createElement('div');
       title.className = 'level-name';
       title.textContent = assignment.title;
-      level.appendChild(icon);
+
+      // Overview email -> show icon
+      // Assignment email - show icon
+      if (email.assignment.length > 1 || assignment.solution) {
+        level.appendChild(icon);
+        // Onclick assignment shorcut
+        icon.onclick = () => {
+          if (assignment.status) {
+            const linkedAssignmentEmail = user.emails.find(
+              (e) => email.assignment.length > 1 && e.assignment.length == 1 && e.assignment.includes(assId));
+            // Show assignment email if user is currently using overview email
+            if (linkedAssignmentEmail) {
+              showMessage(linkedAssignmentEmail);
+              updateInbox();
+            } else {
+              if (assignment.email.hidden) {
+                StyleHelper.setSpyMode(true);
+              }
+              showGameBoard(assId, true);
+            }
+          }
+        };
+        // Link email -> show text
+      } else {
+        title.style.cursor = 'pointer';
+        title.onclick = () => {
+          StyleHelper.setSpyMode(true);
+          activateAssignment(assignment.email.assignment[0]);
+        }
+      }
       level.appendChild(title);
       levelList.appendChild(level);
-      // Onclick assignment shorcut
-      icon.onclick = () => {
-        if (assignment.status) {
-          const linkedAssignmentEmail = user.emails.find(
-            (e) => email.assignment.length > 1 && e.assignment.length == 1 && e.assignment.includes(assId));
-          // Show assignment email if user is currently using overview email
-          if (linkedAssignmentEmail) {
-            showMessage(linkedAssignmentEmail);
-            updateInbox();
-          } else {
-            if (assignment.email.hidden) {
-              StyleHelper.setSpyMode(true);
-            }
-            showGameBoard(assId, true);
-          }
-        }
-      };
+
     });
   }
 
@@ -506,4 +524,3 @@ if (typeof StyleHelper === 'undefined') {
   }
 
 })();
-

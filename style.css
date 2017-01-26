@@ -10,6 +10,7 @@ body {
     color: white;
     font-family: 'Arial';
     background: #f7f7f7;
+    background-size: contain;
 }
 
 #login-modal {
@@ -96,13 +97,13 @@ body {
 
 #taskbar .start{
     cursor: pointer;
-    z-index: 2; 
+    z-index: 2;
 }
 
 #start-menu{
     position: absolute;
     z-index: 9999;
-    left: 0; 
+    left: 0;
     bottom: 40px;
     width: 200px;
     box-shadow: 0px 0px 6px 0px black;
@@ -272,14 +273,16 @@ body {
     content:url('images/read-email.png');
 }
 /*INBOX ITEM VIEW*/
-.email-item, .email-level-container {
+.email-view {
     padding-right: 16px;
-    padding-left :8px;
+    padding-left: 8px;
     width: 56%;
+    height: calc(100% - 100px);
     float: right;
     vertical-align: text-top;
     overflow-y: hidden;
 }
+
 .email-item .email-title {
     font-size: large;
 }
@@ -355,7 +358,6 @@ body {
     visibility: hidden;
     z-index: -100;
 }
-
 #assignment-modal .modal-content {
     padding: 5px;
     box-sizing: border-box;
