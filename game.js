@@ -1,4 +1,4 @@
-/* globals UserData,StyleHelper,EventHelper,DOMHelper,$ */
+/* globals UserData,StyleHelper,EventHelper,DOMHelper,AudioHelper,$ */
 'use strict';
 if (typeof UserData === 'undefined') {
   throw new Error('game.js requires data.js');
@@ -131,8 +131,47 @@ if (typeof StyleHelper === 'undefined') {
             containment: 'parent'
         });
 
+        const SLOTS = [{
+            id: '1'
+        },{
+            id: '2'
+        },{
+            id: '3'
+        }];
+
+        const TILES = [{
+            id: 'A',
+            text: [
+                'for (i = 0; i < 9; i++) {',
+                {id: '4'},
+                '}'
+            ]
+        }, {
+            id: 'B',
+            text: [
+                'if (i % 2 == 0) {',
+                {id: '5'},
+                '} else {',
+                {id: '6'},
+                '}'
+            ]
+        }, {
+            id: 'C',
+            text: ['x = x + 1']
+        }, {
+            id: 'D',
+            text: ['y = y + 1']
+        }, {
+            id: 'E',
+            text: ['x = x + 5']
+        }, {
+            id: 'F',
+            text: ['y = x + y']
+        }];
+
+
         // TODO: load level?
-        initGameBoard([], []);
+        initGameBoard(SLOTS, TILES);
         //initialize();
         DOMHelper.setProperty('#username', 'value', 'DarkSeraphim');
         document.querySelector('form').onsubmit({preventDefault: _=>{}});
@@ -239,29 +278,46 @@ if (typeof StyleHelper === 'undefined') {
           });
     }
 
-    function initGameBoard(tiles, slots) {
+    function initGameBoard(slots, tiles) {
 
-        var tileContainer = document.querySelector('#tiles');
+        var tileContainer = document.querySelector('#tiles ul');
         var slotContainer = document.querySelector('#puzzle');
         slots.forEach(slot => {
-            //<div class="snap-target" data-key="1"></div>
+            //<div class="slot snap-target" data-key="1"></div>
             var div = document.createElement('div');
-            div.setAttribute('class', 'snap-target');
+            div.setAttribute('class', 'slot snap-target');
             div.setAttribute('data-key', slot.id);
             // TODO: set x, y to match level
             slotContainer.appendChild(div);
         });
 
         tiles.forEach(tile => {
-            // TODO: flexbox this one, with wrap and left align
+            /*
+            <div class="tile" data-key="A">
+                <span>A</span>
+                <div class="snap-target" data-key="4"></div>
+                <span>B</span>
+            </div>
+            */
             // <div class="tile" data-key="A"><span>A</span></div>
+            var li = document.createElement('li');
             var div = document.createElement('div');
             div.setAttribute('class', 'tile');
             div.setAttribute('data-key', tile.id);
-            var span = document.createElement('span');
-            span.textContent = tile.description;
-            div.appendChild(span);
-            tileContainer.appendChild(div);
+            (tile.text || []).forEach(item => {
+                var elem;
+                if (typeof item === 'string') {
+                    elem = document.createElement('span');
+                    elem.textContent = item;
+                } else if (typeof item === 'object' && item.id) {
+                    elem = document.createElement('div');
+                    elem.setAttribute('class', 'snap-target');
+                    elem.setAttribute('data-key', item.id);
+                }
+                div.appendChild(elem);
+            });
+            li.appendChild(div);
+            tileContainer.appendChild(li);
         });
 
         $('.tile').draggable({
@@ -288,6 +344,30 @@ if (typeof StyleHelper === 'undefined') {
 
         };
 
+
+
+        /*var validate = () => {
+            
+            var program;
+            slots.forEach(slot => {
+
+            });
+
+            try {
+
+            } catch (ex) {
+
+            }
+        };
+*/
+        var findTile = tile => {
+            for (var key in current) {
+                if (current.hasOwnProperty(key) && current[key] === tile) {
+                    return key;
+                } 
+            }
+        };
+
         window.debugC = current;
 
         var resetDraggable = element => {
@@ -302,12 +382,16 @@ if (typeof StyleHelper === 'undefined') {
             });
 
             var data = $(element).data('key');
-            for (var key in current) {
+            var key = findTile(data);
+            if (key) {
+                delete current[key];
+            }
+            /*for (var key in current) {
                 if (current.hasOwnProperty(key) && current[key] === data) {
                     delete current[key];
                     break;
                 } 
-            }
+            }*/
 
             StyleHelper.set('.tile[data-key=' + data + ']', 'width', '');
             StyleHelper.set('.tile[data-key=' + data + ']', 'height', '');
@@ -322,6 +406,7 @@ if (typeof StyleHelper === 'undefined') {
             var child;
             if (current[slot]) {
                 child = current[slot];
+                console.log('Child: ' + child);
             }
 
             if (!$(element).hasClass('slot')) {
@@ -356,6 +441,12 @@ if (typeof StyleHelper === 'undefined') {
             drop: function (event, ui) {
                 var slot = $(this).data('key');
                 var tile = $(ui.draggable).data('key');
+                var key = findTile(tile);
+                /*if (key) {
+                    console.log('Try to reset ' + key);
+                    resetDroppable($('.snap-target[data-key="' + key + '"]'));
+                }*/
+                delete current[key];
                 current[slot] = tile;
                 var draggable = ui.draggable;
                 $(draggable).css({
@@ -365,6 +456,14 @@ if (typeof StyleHelper === 'undefined') {
                 draggable.position({of: $(this)});
                 $(draggable).find('.snap-target').droppable('option', 'disabled', false);
                 return false;
+            },
+            out: function (event, ui) {
+                var tile = $(ui.draggable).data('key');
+                StyleHelper.set('.tile[data-key="' + tile + '"]', 'width', '');
+                StyleHelper.set('.tile[data-key="' + tile + '"]', 'height', '');
+                document.querySelectorAll('.tile[data-key="' + tile + '"] .snap-target').forEach(e => {
+                    resetDroppable(e);
+                });
             }
         });
 
@@ -378,7 +477,7 @@ if (typeof StyleHelper === 'undefined') {
             var selector = '#assignment-modal .modal-transparent';
             StyleHelper.set(selector, 'border', '2px solid red');
             AudioHelper.restart('buzzer');
-            $( "#assignment-modal" ).effect( "shake", {}, null, function(){
+            $('#assignment-modal').effect( 'shake', {}, null, function(){
                 StyleHelper.set(selector, 'border', '');
             } );
 
