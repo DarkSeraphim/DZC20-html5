@@ -5,7 +5,7 @@ if (typeof UserData === 'undefined') {
 }
 
 if (typeof StyleHelper === 'undefined') {
-  throw new Error('game.js requires helpers.js'); 
+  throw new Error('game.js requires helpers.js');
 }
 
 (function () {
@@ -47,6 +47,7 @@ if (typeof StyleHelper === 'undefined') {
       });
 
       setTimeout(function () {
+        user.assignments = user.assignments || ASSIGNMENTS;
         user.emails = user.emails || DEFAULT_EMAILS;
         showMessage(user.emails[0]);
         updateInbox();
@@ -58,7 +59,7 @@ if (typeof StyleHelper === 'undefined') {
       }, 3000);
       return false;
     });
-    
+
     EventHelper.on('.start', 'click', (e) => {
       e.preventDefault();
       StyleHelper.toggle('#start-menu');
@@ -103,7 +104,7 @@ if (typeof StyleHelper === 'undefined') {
       e.preventDefault();
       showInbox(true);
     });
-    
+
     var doModalFocus = element => {
       StyleHelper.set('.modal', 'zIndex', '');
       element.style.zIndex = '1';
@@ -120,32 +121,31 @@ if (typeof StyleHelper === 'undefined') {
     EventHelper.on('.modal', 'click', e => {
       doModalFocus(e.currentTarget);
     });
-
-    DOMHelper.setProperty('#username', 'value', 'DarkSeraphim');
-    document.querySelector('form').onsubmit({ preventDefault: _ => {} });
+    //DOMHelper.setProperty('#username', 'value', 'DarkSeraphim');
+    //document.querySelector('form').onsubmit({ preventDefault: _ => {} });
   });
 
   function updateInbox() {
     // Removes all mails
-    var emailList = document.getElementsByClassName('email-list')[0];
+    let emailList = document.getElementsByClassName('email-list')[0];
     while (emailList.lastChild) {
       emailList.removeChild(emailList.lastChild);
     }
     // Adds mails
-    user.emails.forEach(function (email) {
-      var listitem = document.createElement('div');
+    user.emails.forEach((email) => {
+      let listitem = document.createElement('div');
       listitem.className = 'email-listitem';
-      var icon = document.createElement('div');
+      let icon = document.createElement('div');
       icon.className = 'email-icon';
       icon.className += email.read ? ' email-read' : ' email-unread';
-      var title = document.createElement('div');
+      let title = document.createElement('div');
       title.className = 'email-title';
       title.textContent = email.title;
       listitem.appendChild(icon);
       listitem.appendChild(title);
       emailList.appendChild(listitem);
       // Registers onclick
-      listitem.onclick = function () {
+      listitem.onclick = () => {
         showMessage(email);
         updateInbox();
       };
@@ -158,7 +158,7 @@ if (typeof StyleHelper === 'undefined') {
 
   // Updates Inbox shortcut badge
   function updateInboxShortcut() {
-    var hasNewMail = user.emails.some((email) => !email.read);
+    let hasNewMail = user.emails.some((email) => !email.read);
     if (hasNewMail) {
       StyleHelper.show('.email-shortcut .email-newmail');
     } else {
@@ -167,10 +167,10 @@ if (typeof StyleHelper === 'undefined') {
   }
 
   function addEmail(from, title, message) {
-    var email = {
-      from: from,
-      title: title,
-      message: message,
+    const email = {
+      from,
+      title,
+      message,
       read: false,
       time: (new Date()).getTime()
     };
@@ -179,8 +179,29 @@ if (typeof StyleHelper === 'undefined') {
     updateInbox();
   }
 
+  // Add a new email to inbox after 2 seconds and update assignment status
+  function activateAssignment(assId, delay = 0) {
+    if (assId >= user.assignments.length) {
+      throw Error('No such assignment with that assId exist');
+    }
+    let assignment = user.assignments[assId];
+    assignment.status = 1;
+    let email = Object.assign({ read: false }, assignment.email);
+    if (user.emails.find((e) => e.title == email.title)) {
+      return;
+    }
+    user.emails.push(email);
+    setTimeout(() => {
+      AudioHelper.play('email');
+      updateInbox();
+    }, delay);
+  }
+
   function showMessage(email) {
-    email.read = true;
+    let emailWindow = document.querySelector('#email-modal');
+    if (emailWindow.style.display != 'none') {
+      email.read = true;
+    }
     let title = document.querySelector('.email-item .email-title h3');
     let from = document.querySelector('.email-item .email-from');
     let message = document.querySelector('.email-item .email-message');
@@ -195,12 +216,12 @@ if (typeof StyleHelper === 'undefined') {
       levelList.removeChild(levelList.lastChild);
     }
     // Adds levels
-    email.assignment.forEach(function (assId) {
-      if (assId >= ASSIGNMENTS.length) {
+    email.assignment.forEach((assId) => {
+      if (assId >= user.assignments.length) {
         throw Error('game.js assignmentId not in range');
       }
       // Hidden assignment
-      let assignment = ASSIGNMENTS[assId];
+      let assignment = user.assignments[assId];
       if (assignment.email.hidden && !assignment.status) {
         return;
       }
@@ -215,25 +236,39 @@ if (typeof StyleHelper === 'undefined') {
       let title = document.createElement('div');
       title.className = 'level-name';
       title.textContent = assignment.title;
-      level.appendChild(icon);
+
+      // Overview email -> show icon
+      // Assignment email - show icon
+      if (email.assignment.length > 1 || assignment.solution) {
+        level.appendChild(icon);
+        // Onclick assignment shorcut
+        icon.onclick = () => {
+          if (assignment.status) {
+            const linkedAssignmentEmail = user.emails.find(
+              (e) => email.assignment.length > 1 && e.assignment.length == 1 && e.assignment.includes(assId));
+            // Show assignment email if user is currently using overview email
+            if (linkedAssignmentEmail) {
+              showMessage(linkedAssignmentEmail);
+              updateInbox();
+            } else {
+              if (assignment.email.hidden) {
+                StyleHelper.setSpyMode(true);
+              }
+              showGameBoard(assId, true);
+            }
+          }
+        };
+        // Link email -> show text
+      } else if (assignment.email.assignment[0]) {
+        title.style.cursor = 'pointer';
+        title.onclick = () => {
+          StyleHelper.setSpyMode(true);
+          activateAssignment(assignment.email.assignment[0]);
+        }
+      }
       level.appendChild(title);
       levelList.appendChild(level);
-      // Onclick assignment shorcut
-      icon.onclick = function () {
-        if (assignment.status) {
-          const linkedAssignmentEmail = user.emails.find(
-            function (e) {
-              return email.assignment.length > 1 && e.assignment.length == 1 && e.assignment.includes(assId)
-            });
-          // Show assignment email if user is currently using overview email
-          if (linkedAssignmentEmail) {
-            showMessage(linkedAssignmentEmail);
-            updateInbox();
-          } else { // TODO: Open game board from here!!!
-            showGameBoard(assId, true);
-          }
-        }
-      };
+
     });
   }
 
@@ -241,7 +276,7 @@ if (typeof StyleHelper === 'undefined') {
 
     var tileContainer = document.querySelector('#tiles ul');
     var slotContainer = document.querySelector('#puzzle');
-    
+
     while (slotContainer.lastChild) {
       slotContainer.removeChild(slotContainer.lastChild);
     }
@@ -331,14 +366,14 @@ if (typeof StyleHelper === 'undefined') {
 
     const CHECKABLES = slots.map(slot => slot.id);
     tiles.map(tile => tile.text).filter(text => !!text)
-         .forEach(text => {
-            text.forEach(entry => {
-              if (typeof entry === 'object' && typeof entry.id === 'string') {
-                CHECKABLES.push(entry.id);
-              }
-            });
-         });
-    
+      .forEach(text => {
+        text.forEach(entry => {
+          if (typeof entry === 'object' && typeof entry.id === 'string') {
+            CHECKABLES.push(entry.id);
+          }
+        });
+      });
+
     var validate = () => {
       return CHECKABLES.every(slot => {
         
@@ -349,7 +384,7 @@ if (typeof StyleHelper === 'undefined') {
         return false;
       });
     };
-  
+
     var findTile = tile => {
       for (var key in current) {
         if (current.hasOwnProperty(key) && current[key] === tile) {
@@ -418,7 +453,7 @@ if (typeof StyleHelper === 'undefined') {
         }
         var slot = $(this).data('key');
         var tile = $(element).data('key');
-        var DOMSlot = document.querySelector('.snap-target[data-key="'+slot+'"]').parentElement;
+        var DOMSlot = document.querySelector('.snap-target[data-key="' + slot + '"]').parentElement;
         do {
           if (DOMSlot.classList.contains('tile') && tile === DOMSlot.getAttribute('data-key')) {
             return false;
@@ -480,20 +515,20 @@ if (typeof StyleHelper === 'undefined') {
         var delay = 2500;
         try {
           AudioHelper.play('beatLevel');
-          setTimeout(function(){ 
-              goKaput(5, 300);
+          setTimeout(function () {
+            goKaput(5, 300);
           }, delay);
-        } finally {          
-          setTimeout(function(){ 
-              callback();
+        } finally {
+          setTimeout(function () {
+            callback();
           }, delay + 2500);
         }
       } else {
         var selector = '#assignment-modal .modal-transparent';
         StyleHelper.set(selector, 'border', '2px solid red');
         AudioHelper.restart('buzzer');
-        $('#assignment-modal').effect( 'shake', {}, null, function(){
-            StyleHelper.set(selector, 'border', '');
+        $('#assignment-modal').effect('shake', {}, null, function () {
+          StyleHelper.set(selector, 'border', '');
         });
       }
     });
@@ -623,15 +658,17 @@ if (typeof StyleHelper === 'undefined') {
 
   function showGameBoard(assId, bool) {
     if (bool) {
-      let assignment = ASSIGNMENTS[assId];
-      initGameBoard(assignment.slots, assignment.tiles, {
-
-      }, () => {
-        // Do shit
+      let assignment = user.assignments[assId];
+      initGameBoard(assignment.slots, assignment.tiles, assignment.solution, () => {
+        if (assignment.status != 2) {
+          assignment.status = 2;
+          activateAssignment(user.assignments.indexOf(assignment) + 1);
+        }
+        // TODO: Replay or Close window box here!
       });
       StyleHelper.show('#assignment-modal');
-      
-      setTimeout(() =>  {
+
+      setTimeout(() => {
         StyleHelper.set('.modal', 'zIndex', '');
         StyleHelper.set('#assignment-modal', 'zIndex', '1');
       }, 1);
@@ -639,14 +676,14 @@ if (typeof StyleHelper === 'undefined') {
       StyleHelper.hide('#assignment-modal');
     }
   }
-}) ();
 
-// Shows/hides mailbox
-function showInbox(bool) {
-  if (bool) {
-    StyleHelper.show('#email-modal');
-    StyleHelper.set('#email-modal', 'z-index', 1);
-  } else {
-    StyleHelper.hide('#email-modal');
+  function showInbox(bool) {
+    if (bool) {
+      StyleHelper.show('#email-modal');
+      StyleHelper.set('#email-modal', 'z-index', 1);
+    } else {
+      StyleHelper.hide('#email-modal');
+    }
   }
-}
+
+})();
