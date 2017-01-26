@@ -217,7 +217,7 @@ body {
 }
 /*INBOX*/
 .email-container {
-    overflow-x : hidden;
+    overflow-y : hidden;
     background: #F7F2C8;
     color: #6670AB;
     font-family: "Trebuchet MS", Helvetica, sans-serif;
@@ -280,7 +280,7 @@ body {
     height: calc(100% - 100px);
     float: right;
     vertical-align: text-top;
-    overflow-y: hidden;
+    overflow-x: hidden;
 }
 
 .email-item .email-title {
@@ -663,4 +663,7 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
+    font-weight: bold;
+    font-size: 24px;
+    font-family: 'Lucida Console';
 }

@@ -264,7 +264,7 @@ if (typeof StyleHelper === 'undefined') {
         title.onclick = () => {
           StyleHelper.setSpyMode(true);
           activateAssignment(assignment.email.assignment[0]);
-        }
+        };
       }
       level.appendChild(title);
       levelList.appendChild(level);
@@ -272,11 +272,13 @@ if (typeof StyleHelper === 'undefined') {
     });
   }
 
+  var gbuuid = 0;
+
   function initGameBoard(slots, tiles, solution, callback) {
 
     var tileContainer = document.querySelector('#tiles ul');
     var slotContainer = document.querySelector('#puzzle');
-
+    let uuid = gbuuid++;
     while (slotContainer.lastChild) {
       slotContainer.removeChild(slotContainer.lastChild);
     }
@@ -508,11 +510,12 @@ if (typeof StyleHelper === 'undefined') {
     });
 
     $('.slot.snap-target').droppable('option', 'disabled', false);
-    EventHelper.off('#puzzle-validate button');
+    EventHelper.off('#puzzle-validate button', 'click');
     EventHelper.on('#puzzle-validate button', 'click', (e) => {
       e.preventDefault();
       if (validate()) {
         var delay = 2500;
+        console.log('True: ' + uuid);
         try {
           AudioHelper.play('beatLevel');
           setTimeout(function () {
@@ -524,6 +527,7 @@ if (typeof StyleHelper === 'undefined') {
           }, delay + 2500);
         }
       } else {
+        console.log('False: ' + uuid);
         var selector = '#assignment-modal .modal-transparent';
         StyleHelper.set(selector, 'border', '2px solid red');
         AudioHelper.restart('buzzer');
@@ -659,7 +663,7 @@ if (typeof StyleHelper === 'undefined') {
   function showGameBoard(assId, bool) {
     if (bool) {
       let assignment = user.assignments[assId];
-      document.querySelector('#assignment-title').textContent = assignment.theAssignment || 'Solve this!';
+      document.querySelector('#assignment-title span').textContent = assignment.theAssignment || 'Solve this!';
       initGameBoard(assignment.slots, assignment.tiles, assignment.solution, () => {
         if (assignment.status !== 2) {
           assignment.status = 2;

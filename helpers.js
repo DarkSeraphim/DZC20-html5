@@ -108,7 +108,7 @@ window.EventHelper = (function () {
     },
     off: function (selector, event) {
       select(selector, element => {
-        delete element['on' + event];
+        element['on' + event] = undefined;
       });
     }
   };
