@@ -62,6 +62,7 @@ window.StyleHelper = (function () {
         setSpyMode: function(bool){
             if (bool) {
                 AudioHelper.play('hackerMusic3');
+                AudioHelper.play('shortBoom');
                 this.set('body', 'background-image', "url('./images/wallpaper-csi.jpg')");
                 this.set('.modal-transparent', 'background', "url('./images/wallpaper-csi.jpg')");
                 DOMHelper.setAttribute('.email-banner img', 'src', './images/inbox-banner-spy.png');
@@ -160,10 +161,17 @@ window.AudioHelper = (function(){
         'startup', 
         'buzzer', 
         'hackerMusic1',
-        'hackerMusic3'
+        'hackerMusic3',
+        'beatLevel'
     ];
 
     loadSounds(soundsToLoad, 'mp3');
+
+    //When it finishes, play again
+    sounds['hackerMusic3'].addEventListener('ended', function() {
+        this.currentTime = 0;
+        this.play();
+    }, false);
 
     return {
         play: function(sound){

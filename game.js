@@ -471,15 +471,24 @@ if (typeof StyleHelper === 'undefined') {
 
         EventHelper.on('#puzzle-validate button', 'click', (e) => {
             e.preventDefault();
-            // goKaput(5, 300); //Triggers explosion of the circle
 
-            //This should only happen when the code is wrong:
-            var selector = '#assignment-modal .modal-transparent';
-            StyleHelper.set(selector, 'border', '2px solid red');
-            AudioHelper.restart('buzzer');
-            $('#assignment-modal').effect( 'shake', {}, null, function(){
-                StyleHelper.set(selector, 'border', '');
-            } );
+            //Randomly generate a boolean for now to simulate if the code is wrong or not
+            var correctCode = Math.random() >= 0.5;
+            if(correctCode){
+                AudioHelper.play('beatLevel');
+                setTimeout(function(){ 
+                    goKaput(5, 300);
+                }, 2200);
+            } else {
+                //This should only happen when the code is wrong:
+                var selector = '#assignment-modal .modal-transparent';
+                StyleHelper.set(selector, 'border', '2px solid red');
+                AudioHelper.restart('buzzer');
+                $('#assignment-modal').effect( 'shake', {}, null, function(){
+                    StyleHelper.set(selector, 'border', '');
+                } );
+            }
+            
 
             // Use `current` to verify whether the solution is valid 
         });
