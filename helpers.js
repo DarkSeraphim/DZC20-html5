@@ -162,7 +162,8 @@ window.AudioHelper = (function(){
         'buzzer', 
         'hackerMusic1',
         'hackerMusic3',
-        'beatLevel'
+        'beatLevel',
+        'email'
     ];
 
     loadSounds(soundsToLoad, 'mp3');

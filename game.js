@@ -478,7 +478,7 @@ if (typeof StyleHelper === 'undefined') {
                 AudioHelper.play('beatLevel');
                 setTimeout(function(){ 
                     goKaput(5, 300);
-                }, 2200);
+                }, 2500);
             } else {
                 //This should only happen when the code is wrong:
                 var selector = '#assignment-modal .modal-transparent';
