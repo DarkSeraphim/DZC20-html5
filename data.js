@@ -177,6 +177,15 @@ const ASSIGNMENTS = [
       text: ['y = x + y']
     }],
     solution: { 1: 'A' }
+  }, {//8
+    status: 1,
+    email: {
+      from: 'csi@tuedeepweb.onion',
+      title: 'The end :)',
+      message: "Hello again,\nYou have just finished TU/e Computer Science program. We look forward to seeing you" +
+               " in one of our great Master program. \nThank you!",
+      assignment: [7]
+    }
   }
 ];
 

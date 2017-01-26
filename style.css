@@ -309,6 +309,7 @@ body {
     justify-content: center;
 }
 .email-level {
+    padding-bottom: 16px;
     text-align: center;
     flex: 1 0 30%;
 }

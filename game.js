@@ -56,7 +56,7 @@ if (typeof StyleHelper === 'undefined') {
         StyleHelper.show('.shortcuts');
         StyleHelper.set('body', 'backgroundImage', 'url(./images/desktop-bg.jpg)');
         AudioHelper.play('startup');
-      }, 0);
+      }, 3000);
       return false;
     });
 
@@ -259,7 +259,7 @@ if (typeof StyleHelper === 'undefined') {
           }
         };
         // Link email -> show text
-      } else {
+      } else if (assignment.email.assignment[0]) {
         title.style.cursor = 'pointer';
         title.onclick = () => {
           StyleHelper.setSpyMode(true);
