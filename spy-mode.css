@@ -38,3 +38,13 @@
 .switch-input:checked ~ .switch-label {
     background: #007c00;
 } 
+
+#taskbar ul li.start {
+    background: linear-gradient(to top, black 0%,#01bc01 100%);
+    text-shadow: 1px 1px 10px white;
+}
+
+#puzzle-validate button {
+    background: linear-gradient(to top, black 0%,#01bc01 100%);
+    text-shadow: 1px 1px 10px white;
+}

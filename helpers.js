@@ -62,6 +62,7 @@ window.StyleHelper = (function () {
                 this.set('.modal-transparent', 'background', "url('./images/wallpaper-csi.jpg')");
                 DOMHelper.setAttribute('.email-banner img', 'src', './images/inbox-banner-spy.png');
                 document.querySelector('#spy-mode-css').removeAttribute('disabled');
+                this.set('#taskbar','background',"url('./images/desktop-taskbar-spy.png')");
             } else {
                 AudioHelper.stop('hackerMusic3');
                 this.set('body', 'background-image', "url('./images/desktop-bg.jpg')");
@@ -69,6 +70,7 @@ window.StyleHelper = (function () {
                 this.set('#spy-mode-css', 'disabled', 'true');
                 DOMHelper.setAttribute('.email-banner img', 'src', './images/inbox-banner.png');
                 DOMHelper.setAttribute('#spy-mode-css', 'disabled', true);
+                this.set('#taskbar','background',"url('./images/desktop-taskbar.png')");
             }
         }
     };
