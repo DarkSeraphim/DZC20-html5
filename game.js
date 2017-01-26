@@ -8,68 +8,8 @@ if (typeof StyleHelper === 'undefined') {
   throw new Error('game.js requires helpers.js');
 }
 
-
 (function () {
   // Scope all the thing o/
-  // Mock-up emails and assignments
-
-  const ASSIGNMENTS = [
-    {
-      title: 'App Programming',
-      status: 1,// 0 - disabled, 1 - enabled but not passed, 2 - passed
-      email: {
-        from: 'WhatIsLove_BabyDontHurtMe@tue.nl',
-        title: 'First assignment! App Programming course!',
-        message: 'Hi, time flies even if the chicken doesn\'t',
-        assignment: [0]
-      }
-    }, {
-      title: 'Web Technology',
-      status: 0,
-      email: {
-        from: 'WhatIsLove_BabyDontHurtMe@tue.nl',
-        title: 'Well done! Web Technology assignment ready!',
-        message: 'Very good job. You now need a website to showcase all your shits man ;)',
-        assignment: [1]
-      }
-    }, {
-      title: 'Algorithms',
-      status: 0,
-      email: {
-        from: 'WhatIsLove_BabyDontHurtMe@tue.nl',
-        title: 'Algorithms is hard! Get ready for the exam',
-        message: 'You should not underestimate this course at all!',
-        assignment: [2]
-      }
-    }, {
-      title: 'Hacking Wifi',
-      status: 0,
-      email: {
-        from: 'superdeepweb@thisisthedeepestweb.onion',
-        title: 'Yo yo! Wanna earn some money bro!?',
-        message: 'Hey yo! Recently I got bored with my assignments. If you do it for me, I could pay you some real cash! Interested!?',
-        assignment: [3],
-        hidden: true
-      }
-    }
-  ];
-
-  const DEFAULT_EMAILS = [{
-    from: 'WhatIsLove_BabyDontHurtMe@tue.nl',
-    title: 'Welcome to the Computer Science program at TU/e!',
-    message: 'Welcome to our study plaplaplapal',
-    read: false,
-    time: (new Date()).getTime(),
-    assignment: ASSIGNMENTS.map((value, index) => index)
-  }, {
-    from: 'WhatIsLove_BabyDontHurtMe@tue.nl',
-    title: 'First assignment! App Programming course!',
-    message: 'Hi, time flies even if the chicken doesn\'t',
-    read: false,
-    time: (new Date()).getTime(),
-    assignment: [0]
-  }];
-
   var user;
   var logOut = function () {
     StyleHelper.hide('#taskbar');
@@ -107,6 +47,7 @@ if (typeof StyleHelper === 'undefined') {
 
       setTimeout(function () {
         user.emails = user.emails || DEFAULT_EMAILS;
+        showMessage(user.emails[0]);
         updateInbox();
         StyleHelper.hide('#loader');
         StyleHelper.show('#taskbar');
@@ -153,12 +94,10 @@ if (typeof StyleHelper === 'undefined') {
       e.preventDefault();
       return false;
     });
-
     EventHelper.on('.email-shortcut', 'click', (e) => {
       e.preventDefault();
       showInbox(true);
     });
-
     $('.modal').draggable({
       handle: '.modal-content-title',
       containment: 'parent'
@@ -171,7 +110,6 @@ if (typeof StyleHelper === 'undefined') {
     }, {
       id: '3'
     }];
-
     const TILES = [{
       id: 'A',
       text: [
@@ -201,7 +139,6 @@ if (typeof StyleHelper === 'undefined') {
       id: 'F',
       text: ['y = x + y']
     }];
-
 
     // TODO: load level? | Make a function to open gameboard with input assignment id later! (Khanh)
     initGameBoard(SLOTS, TILES);
@@ -525,7 +462,6 @@ if (typeof StyleHelper === 'undefined') {
       // Use `current` to verify whether the solution is valid
     });
   }
-
 })();
 
 
