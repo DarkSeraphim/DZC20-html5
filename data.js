@@ -1,3 +1,5 @@
+'use strict';
+
 var UserData = (function () {
   return {
     get: function () {

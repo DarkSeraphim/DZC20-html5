@@ -5,7 +5,7 @@ if (typeof UserData === 'undefined') {
 }
 
 if (typeof StyleHelper === 'undefined') {
-  throw new Error('game.js requires helpers.js');
+  throw new Error('game.js requires helpers.js'); 
 }
 
 (function () {
@@ -22,6 +22,7 @@ if (typeof StyleHelper === 'undefined') {
     StyleHelper.set('body', 'backgroundImage', '');
     user = undefined;
   };
+
   var logIn = function (username) {
     user = UserData.load(username);
     return !!user;
@@ -57,16 +58,19 @@ if (typeof StyleHelper === 'undefined') {
       }, 3000);
       return false;
     });
+    
     EventHelper.on('.start', 'click', (e) => {
       e.preventDefault();
       StyleHelper.toggle('#start-menu');
     });
+
     EventHelper.on('#log-out', 'click', (e) => {
       e.preventDefault();
       logOut();
       StyleHelper.hide('#start-menu');
       return false;
     });
+
     EventHelper.on('#mute-toggle-wrapper', 'click', (e) => {
       e.preventDefault();
       var isMuted = DOMHelper.getProperty('#mute-toggle', 'checked');
@@ -94,15 +98,28 @@ if (typeof StyleHelper === 'undefined') {
       e.preventDefault();
       return false;
     });
+
     EventHelper.on('.email-shortcut', 'click', (e) => {
       e.preventDefault();
       showInbox(true);
     });
+    
+    var doModalFocus = element => {
+      StyleHelper.set('.modal', 'zIndex', '');
+      element.style.zIndex = '1';
+    };
+
     $('.modal').draggable({
       handle: '.modal-content-title',
-      containment: 'parent'
+      containment: 'parent',
+      start: (event, ui) => {
+        doModalFocus(ui.helper[0]);
+      }
     });
 
+    EventHelper.on('.modal', 'click', e => {
+      doModalFocus(e.currentTarget);
+    });
 
     DOMHelper.setProperty('#username', 'value', 'DarkSeraphim');
     document.querySelector('form').onsubmit({ preventDefault: _ => {} });
@@ -220,7 +237,7 @@ if (typeof StyleHelper === 'undefined') {
     });
   }
 
-  function initGameBoard(slots, tiles) {
+  function initGameBoard(slots, tiles, solution, callback) {
 
     var tileContainer = document.querySelector('#tiles ul');
     var slotContainer = document.querySelector('#puzzle');
@@ -284,21 +301,25 @@ if (typeof StyleHelper === 'undefined') {
 
     var current = {};
 
-
-    /*var validate = () => {
-
-     var program;
-     slots.forEach(slot => {
-
-     });
-
-     try {
-
-     } catch (ex) {
-
-     }
-     };
-     */
+    const CHECKABLES = slots.map(slot => slot.id);
+    tiles.map(tile => tile.text).filter(text => !!text)
+         .forEach(text => {
+            text.forEach(entry => {
+              if (typeof entry === 'object' && typeof entry.id === 'string') {
+                CHECKABLES.push(entry.id);
+              }
+            });
+         });
+    
+    var validate = () => {
+      for (var slot in CHECKABLES) {
+        if (current[slot] !== solution[slot]) {
+          return false;
+        }
+      }
+      return true;
+    };
+  
     var findTile = tile => {
       for (var key in current) {
         if (current.hasOwnProperty(key) && current[key] === tile) {
@@ -367,14 +388,12 @@ if (typeof StyleHelper === 'undefined') {
         }
         var slot = $(this).data('key');
         var tile = $(element).data('key');
-        var DOMSlot = document.querySelector('.snap-target[data-key="' + slot + '"]');
-        while ((DOMSlot = DOMSlot.parentElement) !== document.body) {
-          if (DOMSlot.classList.contains('tile')) {
-            if (tile === DOMSlot.getAttribute('data-key')) {
-              return false;
-            }
+        var DOMSlot = document.querySelector('.snap-target[data-key="'+slot+'"]').parentElement;
+        do {
+          if (DOMSlot.classList.contains('tile') && tile === DOMSlot.getAttribute('data-key')) {
+            return false;
           }
-        }
+        } while ((DOMSlot = DOMSlot.parentElement) !== document.body);
         return current[slot] === undefined || current[slot] === tile;
       },
       drop: function (event, ui) {
@@ -410,39 +429,49 @@ if (typeof StyleHelper === 'undefined') {
 
     EventHelper.on('#puzzle-validate button', 'click', (e) => {
       e.preventDefault();
-      // goKaput(5, 300); //Triggers explosion of the circle
-
-      //This should only happen when the code is wrong:
-      var selector = '#assignment-modal .modal-transparent';
-      StyleHelper.set(selector, 'border', '2px solid red');
-      AudioHelper.restart('buzzer');
-      $('#assignment-modal').effect('shake', {}, null, function () {
-        StyleHelper.set(selector, 'border', '');
-      });
-
-      // Use `current` to verify whether the solution is valid
+      if (validate()) {
+        try {
+          goKaput(5, 300); //Triggers explosion of the circle
+        } finally {
+          callback();
+        }
+      } else {
+        var selector = '#assignment-modal .modal-transparent';
+        StyleHelper.set(selector, 'border', '2px solid red');
+        AudioHelper.restart('buzzer');
+        $('#assignment-modal').effect( 'shake', {}, null, function() {
+          StyleHelper.set(selector, 'border', '');
+        });
+      }
     });
   }
-
 
   function showGameBoard(assId, bool) {
     if (bool) {
       let assignment = ASSIGNMENTS[assId];
-      initGameBoard(assignment.slots, assignment.tiles);
+      initGameBoard(assignment.slots, assignment.tiles, {
+
+      }, () => {
+        // Do shit
+      });
       StyleHelper.show('#assignment-modal');
+      
+      setTimeout(() =>  {
+        StyleHelper.set('.modal', 'zIndex', '');
+        StyleHelper.set('#assignment-modal', 'zIndex', '1');
+      }, 1);
     } else {
       StyleHelper.hide('#assignment-modal');
     }
   }
+}) ();
 
-  // Shows/hides mailbox
-  function showInbox(bool) {
-    if (bool) {
-      StyleHelper.show('#email-modal');
-    } else {
-      StyleHelper.hide('#email-modal');
-    }
+// Shows/hides mailbox
+function showInbox(bool) {
+  if (bool) {
+    StyleHelper.show('#email-modal');
+    StyleHelper.set('#email-modal', 'z-index', 1);
+  } else {
+    StyleHelper.hide('#email-modal');
   }
-
-})();
-
+}
