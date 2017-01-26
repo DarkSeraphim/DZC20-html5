@@ -10,7 +10,7 @@ body {
     color: white;
     font-family: 'Arial';
     background: #f7f7f7;
-    background-size: contain;
+    background-size: cover;
 }
 
 #login-modal {
