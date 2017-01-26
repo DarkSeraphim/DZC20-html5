@@ -96,7 +96,7 @@ body {
 
 #taskbar .start{
     cursor: pointer;
-    z-index: 1; 
+    z-index: 2; 
 }
 
 #start-menu{
@@ -157,7 +157,7 @@ body {
     height: 600px;
     border-radius: 7px;
     background: none;
-    position: relative;
+    position: absolute;
 }
 
 .modal-blur {
@@ -176,7 +176,6 @@ body {
 .modal-content {
     margin: 30px 5px 5px 5px;
     background: #ccc;
-    z-index: 1;
     float: left;
     width: calc(100% - 10px);
     height: calc(100% - 10px - 25px);
@@ -186,7 +185,6 @@ body {
 .modal-content-title {
     margin: 5px 5px 0px 5px;
     background: none;
-    z-index: 1;
     float: left;
     width: calc(100% - 10px);
     height: 25px;
