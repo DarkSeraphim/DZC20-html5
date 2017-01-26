@@ -87,11 +87,11 @@ window.EventHelper = (function () {
         if (typeof element[key] === 'function') {
           let first = element[key];
           let second = func;
-          func = function () {
+          func = function (e) {
             try {
-              first();
+              first(e);
             } finally {
-              second();
+              second(e);
             }
           };
         }

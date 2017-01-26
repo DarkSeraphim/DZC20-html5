@@ -241,6 +241,10 @@ if (typeof StyleHelper === 'undefined') {
 
     var tileContainer = document.querySelector('#tiles ul');
     var slotContainer = document.querySelector('#puzzle');
+    
+    while (slotContainer.lastChild) {
+      slotContainer.removeChild(slotContainer.lastChild);
+    }
     slots.forEach(slot => {
       //<div class="slot snap-target" data-key="1"></div>
       var div = document.createElement('div');
@@ -250,6 +254,9 @@ if (typeof StyleHelper === 'undefined') {
       slotContainer.appendChild(div);
     });
 
+    while (tileContainer.lastChild) {
+      tileContainer.removeChild(tileContainer.lastChild);
+    }
     tiles.forEach(tile => {
       /*
        <div class="tile" data-key="A">
