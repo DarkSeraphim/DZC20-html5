@@ -122,25 +122,27 @@ window.AudioHelper = (function(){
     //Loads a single sound
     var loadSound = function(sound, format){
         sounds[sound] = new Audio('./audio/' + sound + '.' + format);
-    }
+    };
 
     //Loads all the sounds in the provided array. The given format applies to all the sounds
     var loadSounds = function(sounds, format){
         sounds.forEach(function(sound){
             loadSound(sound, format);
         });
-    }
+    };
     var soundsToLoad = ['boom', 'shortBoom', 'startup', 'buzzer'];
     loadSounds(soundsToLoad, 'mp3');
 
     return {
-        load: function(sound, format){
-            load(sound, format);
-        },
-
         play: function(sound){
-            if (!isMuted)
-                sounds[sound].play();
+            return ((function() {
+                if (!isMuted) {
+                    return sounds[sound].play();
+                }
+                return Promise.resolve(undefined);
+            }) ()).catch(() => {
+                // console.log('Whoops');
+            });
         },
 
         pause: function(sound){
@@ -168,7 +170,7 @@ window.AudioHelper = (function(){
         toggleMute: function(){
             isMuted = !isMuted;
         }
-    }
+    };
 }) ();
 
 (function () {
