@@ -43,6 +43,8 @@ if (typeof StyleHelper === 'undefined') {
         StyleHelper.set('#login-modal', 'opacity', 1);
         StyleHelper.hide('.shortcuts');
         UserData.save(user.name, user);
+        StyleHelper.setSpyMode(false);
+        AudioHelper.stopAll();
         StyleHelper.set('body', 'backgroundImage', '');
         user = undefined;
     };
