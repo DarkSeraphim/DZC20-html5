@@ -38,7 +38,43 @@ const ASSIGNMENTS = [
       title: 'First assignment! App Programming course!',
       message: 'Hi, time flies even if the chicken doesn\'t',
       assignment: [0]
-    }
+    },
+    slots: [{
+      id: '1'
+    }, {
+      id: '2'
+    }, {
+      id: '3'
+    }],
+    tiles: [{
+      id: 'A',
+      text: [
+        'for (i = 0; i < 9; i++) {',
+        { id: '4' },
+        '}'
+      ]
+    }, {
+      id: 'B',
+      text: [
+        'if (i % 2 == 0) {',
+        { id: '5' },
+        '} else {',
+        { id: '6' },
+        '}'
+      ]
+    }, {
+      id: 'C',
+      text: ['x = x + 1']
+    }, {
+      id: 'D',
+      text: ['y = y + 1']
+    }, {
+      id: 'E',
+      text: ['x = x + 5']
+    }, {
+      id: 'F',
+      text: ['y = x + y']
+    }]
   }, {
     title: 'Web Technology',
     status: 0,

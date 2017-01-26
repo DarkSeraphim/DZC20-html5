@@ -103,46 +103,7 @@ if (typeof StyleHelper === 'undefined') {
       containment: 'parent'
     });
 
-    const SLOTS = [{
-      id: '1'
-    }, {
-      id: '2'
-    }, {
-      id: '3'
-    }];
-    const TILES = [{
-      id: 'A',
-      text: [
-        'for (i = 0; i < 9; i++) {',
-        { id: '4' },
-        '}'
-      ]
-    }, {
-      id: 'B',
-      text: [
-        'if (i % 2 == 0) {',
-        { id: '5' },
-        '} else {',
-        { id: '6' },
-        '}'
-      ]
-    }, {
-      id: 'C',
-      text: ['x = x + 1']
-    }, {
-      id: 'D',
-      text: ['y = y + 1']
-    }, {
-      id: 'E',
-      text: ['x = x + 5']
-    }, {
-      id: 'F',
-      text: ['y = x + y']
-    }];
 
-    // TODO: load level? | Make a function to open gameboard with input assignment id later! (Khanh)
-    initGameBoard(SLOTS, TILES);
-    //initialize();
     DOMHelper.setProperty('#username', 'value', 'DarkSeraphim');
     document.querySelector('form').onsubmit({ preventDefault: _ => {} });
   });
@@ -203,9 +164,9 @@ if (typeof StyleHelper === 'undefined') {
 
   function showMessage(email) {
     email.read = true;
-    var title = document.querySelector('.email-item .email-title h3');
-    var from = document.querySelector('.email-item .email-from');
-    var message = document.querySelector('.email-item .email-message');
+    let title = document.querySelector('.email-item .email-title h3');
+    let from = document.querySelector('.email-item .email-from');
+    let message = document.querySelector('.email-item .email-message');
     title.textContent = email.title;
     from.textContent = email.from;
     message.textContent = email.message;
@@ -222,19 +183,19 @@ if (typeof StyleHelper === 'undefined') {
         throw Error('game.js assignmentId not in range');
       }
       // Hidden assignment
-      var assignment = ASSIGNMENTS[assId];
+      let assignment = ASSIGNMENTS[assId];
       if (assignment.email.hidden && !assignment.status) {
         return;
       }
       // Draw assignment shortcuts
-      var level = document.createElement('div');
+      let level = document.createElement('div');
       level.className = 'email-level';
       if (!assignment.status) {
         level.className += ' level-disabled';
       }
-      var icon = document.createElement('div');
+      let icon = document.createElement('div');
       icon.className = 'level-icon';
-      var title = document.createElement('div');
+      let title = document.createElement('div');
       title.className = 'level-name';
       title.textContent = assignment.title;
       level.appendChild(icon);
@@ -243,7 +204,7 @@ if (typeof StyleHelper === 'undefined') {
       // Onclick assignment shorcut
       icon.onclick = function () {
         if (assignment.status) {
-          var linkedAssignmentEmail = user.emails.find(
+          const linkedAssignmentEmail = user.emails.find(
             function (e) {
               return email.assignment.length > 1 && e.assignment.length == 1 && e.assignment.includes(assId)
             });
@@ -252,7 +213,7 @@ if (typeof StyleHelper === 'undefined') {
             showMessage(linkedAssignmentEmail);
             updateInbox();
           } else { // TODO: Open game board from here!!!
-            alert("why? " + assId);
+            showGameBoard(assId, true);
           }
         }
       };
@@ -462,14 +423,26 @@ if (typeof StyleHelper === 'undefined') {
       // Use `current` to verify whether the solution is valid
     });
   }
+
+
+  function showGameBoard(assId, bool) {
+    if (bool) {
+      let assignment = ASSIGNMENTS[assId];
+      initGameBoard(assignment.slots, assignment.tiles);
+      StyleHelper.show('#assignment-modal');
+    } else {
+      StyleHelper.hide('#assignment-modal');
+    }
+  }
+
+  // Shows/hides mailbox
+  function showInbox(bool) {
+    if (bool) {
+      StyleHelper.show('#email-modal');
+    } else {
+      StyleHelper.hide('#email-modal');
+    }
+  }
+
 })();
 
-
-// Shows/hides mailbox
-function showInbox(bool) {
-  if (bool) {
-    StyleHelper.show('#email-modal');
-  } else {
-    StyleHelper.hide('#email-modal');
-  }
-}
