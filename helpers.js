@@ -63,7 +63,6 @@ window.StyleHelper = (function () {
     setSpyMode: function(bool){
         if (bool) {
             AudioHelper.play('hackerMusic3');
-            AudioHelper.play('shortBoom');
             this.set('body', 'background-image', "url('./images/wallpaper-csi.jpg')");
             this.set('.modal-transparent', 'background', "url('./images/wallpaper-csi.jpg')");
             DOMHelper.setAttribute('.email-banner img', 'src', './images/inbox-banner-spy.png');
