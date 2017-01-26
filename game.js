@@ -659,8 +659,9 @@ if (typeof StyleHelper === 'undefined') {
   function showGameBoard(assId, bool) {
     if (bool) {
       let assignment = user.assignments[assId];
+      document.querySelector('#assignment-title').textContent = assignment.theAssignment || 'Solve this!';
       initGameBoard(assignment.slots, assignment.tiles, assignment.solution, () => {
-        if (assignment.status != 2) {
+        if (assignment.status !== 2) {
           assignment.status = 2;
           activateAssignment(user.assignments.indexOf(assignment) + 1);
         }

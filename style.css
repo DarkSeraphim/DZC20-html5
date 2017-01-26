@@ -217,7 +217,7 @@ body {
 }
 /*INBOX*/
 .email-container {
-    overflow-y : hidden;
+    overflow-x : hidden;
     background: #F7F2C8;
     color: #6670AB;
     font-family: "Trebuchet MS", Helvetica, sans-serif;

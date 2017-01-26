@@ -70,43 +70,41 @@ const ASSIGNMENTS = [
                'the enemy’s system:\n',
       assignment: [3]
     },
-    slots: [{
-      id: '1'
-    }, {
-      id: '2'
-    }, {
-      id: '3'
-    }],
+    theAssignment: 'How many input numbers are even ?',
+    slots: [{id: '1'}, {id: '2'}],
     tiles: [{
-      id: 'A',
-      text: [
-        'for (i = 0; i < 9; i++) {',
-        { id: '4' },
-        '}'
-      ]
-    }, {
-      id: 'B',
-      text: [
-        'if (i % 2 == 0) {',
-        { id: '5' },
-        '} else {',
-        { id: '6' },
-        '}'
-      ]
-    }, {
-      id: 'C',
-      text: ['x = x + 1']
-    }, {
-      id: 'D',
-      text: ['y = y + 1']
-    }, {
-      id: 'E',
-      text: ['x = x + 5']
-    }, {
-      id: 'F',
-      text: ['y = x + y']
-    }],
-    solution: { 1: 'A' }
+        id: 'A',
+        text: [
+          {
+            before: 'if',
+            id: '3',
+            after: '{'
+          },
+          {id: '4'},
+          '} else {',
+          {id: '5'},
+          '}'
+        ]
+      }, {
+        id: 'B',
+        text: ['number is even']
+      }, {
+        id: 'C',
+        text: ['count']
+      }, {
+        id: 'D',
+        text: ['drop']
+      }, {
+        id: 'E',
+        text: ['print count']
+      }],
+    solution: {
+        1: ['A'],
+        2: ['E'],
+        3: ['B'],
+        4: ['C'],
+        5: ['D']
+      }
   }, {//4
     status: 1,
     email: {
@@ -140,43 +138,63 @@ const ASSIGNMENTS = [
       message: 'Help me out! I can make you great again!',
       assignment: [6]
     },
-    slots: [{
-      id: '1'
-    }, {
-      id: '2'
-    }, {
-      id: '3'
-    }],
+    theAssignment: 'How many input numbers are even and lower than 8 ?',
+    slots: [{id: '1'}, {id: '2'}],
     tiles: [{
-      id: 'A',
-      text: [
-        'for (i = 0; i < 9; i++) {',
-        { id: '4' },
-        '}'
-      ]
-    }, {
-      id: 'B',
-      text: [
-        'if (i % 2 == 0) {',
-        { id: '5' },
-        '} else {',
-        { id: '6' },
-        '}'
-      ]
-    }, {
-      id: 'C',
-      text: ['x = x + 1']
-    }, {
-      id: 'D',
-      text: ['y = y + 1']
-    }, {
-      id: 'E',
-      text: ['x = x + 5']
-    }, {
-      id: 'F',
-      text: ['y = x + y']
-    }],
-    solution: { 1: 'A' }
+        id: 'A',
+        text: [
+          {
+            before: 'if',
+            id: '3',
+            after: '{'
+          },
+          {id: '4'},
+          '} else {',
+          {id: '5'},
+          '}'
+        ]
+      }, {
+        id: 'B',
+        text: [
+          {
+            before: 'if',
+            id: '6',
+            after: '{'
+          },
+          {id: '7'},
+          '} else {',
+          {id: '8'},
+          '}'
+        ]
+      }, {
+        id: 'C',
+        text: ['number is even']
+      }, {
+        id: 'D',
+        text: ['number < 8']
+      }, {
+        id: 'E',
+        text: ['count']
+      }, {
+        id: 'F',
+        text: ['drop']
+      }, {
+        id: 'G',
+        text: ['drop']
+      }, {
+        id: 'H',
+        text: ['print count']
+      }],
+    solution: {
+        1: ['A', 'B'],
+        2: ['H'],
+        3: ['C', 'D'],
+        4: ['B', 'A'],
+        5: ['F', 'G'],
+        6: ['D', 'C'],
+        7: ['E'],
+        8: ['G', 'F']
+      }
   }, {//8
     status: 1,
     email: {
