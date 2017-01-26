@@ -270,15 +270,36 @@ if (typeof StyleHelper === 'undefined') {
       var div = document.createElement('div');
       div.setAttribute('class', 'tile');
       div.setAttribute('data-key', tile.id);
+      div.style.zIndex = '10';
       (tile.text || []).forEach(item => {
         var elem;
         if (typeof item === 'string') {
           elem = document.createElement('span');
+          if (tile.text.length === 1) {
+            elem.style.display = 'inline';
+            elem.style.textAlign = 'center';
+          }
           elem.textContent = item;
         } else if (typeof item === 'object' && item.id) {
           elem = document.createElement('div');
           elem.setAttribute('class', 'snap-target');
           elem.setAttribute('data-key', item.id);
+
+          if (item.before || item.after) {
+            let div = elem;
+            elem = document.createElement('span');
+            if (item.before) {
+              let span = document.createElement('span');
+              span.textContent = item.before;
+              elem.appendChild(span);
+            }
+            elem.appendChild(div);
+            if (item.after) {
+              let span = document.createElement('span');
+              span.textContent = item.after;
+              elem.appendChild(span);
+            }
+          }
         }
         div.appendChild(elem);
       });
@@ -319,12 +340,14 @@ if (typeof StyleHelper === 'undefined') {
          });
     
     var validate = () => {
-      for (var slot in CHECKABLES) {
-        if (current[slot] !== solution[slot]) {
-          return false;
+      return CHECKABLES.every(slot => {
+        
+        if (solution[slot].indexOf(current[slot]) >= 0) {
+          return true;
         }
-      }
-      return true;
+        console.log('Invalid one: ' + slot + ' => ' + current[slot]);
+        return false;
+      });
     };
   
     var findTile = tile => {
@@ -362,6 +385,7 @@ if (typeof StyleHelper === 'undefined') {
 
       StyleHelper.set('.tile[data-key=' + data + ']', 'width', '');
       StyleHelper.set('.tile[data-key=' + data + ']', 'height', '');
+      StyleHelper.set('.tile[data-key="' + data + '"]', 'zIndex', '10');
       document.querySelectorAll('.tile[data-key=' + data + '] > .snap-target').forEach(element => {
         resetDroppable(element);
       });
@@ -373,7 +397,6 @@ if (typeof StyleHelper === 'undefined') {
       var child;
       if (current[slot]) {
         child = current[slot];
-        console.log('Child: ' + child);
       }
 
       if (!$(element).hasClass('slot')) {
@@ -414,18 +437,35 @@ if (typeof StyleHelper === 'undefined') {
         delete current[key];
         current[slot] = tile;
         var draggable = ui.draggable;
+        var size = Math.min($(this)[0].clientHeight, 16);
+        $(draggable).find('.snap-target').droppable('option', 'disabled', false);
+
+        let z = 0;
+        if ($(this).hasClass('slot')) {
+          z = 5;
+        } else {
+          z = parseInt($(this).data('z')) + 1;
+        }
+
         $(draggable).css({
           width: $(this).css('width'),
-          height: $(this).css('height')
+          height: $(this).css('height'),
+          zIndex: '' + z
+        });
+        $(draggable).find('span').css({
+          fontSize: (size - 2) + 'px',
+          lineHeight: Math.floor((size * 1.25)) + 'px'
         });
         draggable.position({ of: $(this) });
-        $(draggable).find('.snap-target').droppable('option', 'disabled', false);
+        $(draggable).data('z', z);
+
         return false;
       },
       out: function (event, ui) {
         var tile = $(ui.draggable).data('key');
         StyleHelper.set('.tile[data-key="' + tile + '"]', 'width', '');
         StyleHelper.set('.tile[data-key="' + tile + '"]', 'height', '');
+        StyleHelper.set('.tile[data-key="' + tile + '"]', 'zIndex', '10');
         document.querySelectorAll('.tile[data-key="' + tile + '"] .snap-target').forEach(e => {
           resetDroppable(e);
         });
@@ -433,6 +473,7 @@ if (typeof StyleHelper === 'undefined') {
     });
 
     $('.slot.snap-target').droppable('option', 'disabled', false);
+    EventHelper.off('#puzzle-validate button');
     EventHelper.on('#puzzle-validate button', 'click', (e) => {
       e.preventDefault();
       if (validate()) {
@@ -457,6 +498,128 @@ if (typeof StyleHelper === 'undefined') {
       }
     });
   }
+
+  // Debuggles
+  window.buildGame = function (level) {
+    StyleHelper.show('#assignment-modal');
+    if (level === 1) {
+      initGameBoard([{id: '1'}, {id: '2'}],
+      [{
+        id: 'A',
+        text: [
+          {
+            before: 'if',
+            id: '3',
+            after: '{'
+          },
+          {id: '4'},
+          '} else {',
+          {id: '5'},
+          '}'
+        ]
+      }, {
+        id: 'B',
+        text: ['number is even']
+      }, {
+        id: 'C',
+        text: ['count']
+      }, {
+        id: 'D',
+        text: ['drop']
+      }, {
+        id: 'E',
+        text: ['print count']
+      }], {
+        1: ['A'],
+        2: ['E'],
+        3: ['B'],
+        4: ['C'],
+        5: ['D']
+      }, () => alert('Passed level 1!'));
+    } else if (level === 2) {
+      initGameBoard([{id: '1'}, {id: '2'}],
+      [{
+        id: 'A',
+        text: [
+          {
+            before: 'if',
+            id: '3',
+            after: '{'
+          },
+          {id: '4'},
+          '} else {',
+          {id: '5'},
+          '}'
+        ]
+      }, {
+        id: 'B',
+        text: [
+          {
+            before: 'if',
+            id: '6',
+            after: '{'
+          },
+          {id: '7'},
+          '} else {',
+          {id: '8'},
+          '}'
+        ]
+      }, {
+        id: 'C',
+        text: ['number is even']
+      }, {
+        id: 'D',
+        text: ['number < 8']
+      }, {
+        id: 'E',
+        text: ['count']
+      }, {
+        id: 'F',
+        text: ['drop']
+      }, {
+        id: 'G',
+        text: ['drop']
+      }, {
+        id: 'H',
+        text: ['print count']
+      }], {
+        1: ['A', 'B'],
+        2: ['H'],
+        3: ['C', 'D'],
+        4: ['B', 'A'],
+        5: ['F', 'G'],
+        6: ['D', 'C'],
+        7: ['E'],
+        8: ['G', 'F']
+      }, () => alert('Passed level 2!'));
+    } else {
+      initGameBoard([{id: '1'}],
+        [{
+          id: 'A',
+          text: [
+            {
+              before: 'if',
+              id: '2',
+              after: '{'
+            },
+            {id: '3'},
+            '} else {',
+            {id: '4'},
+            '}'
+          ]
+        }, {
+          id: 'B',
+          text: ['Bar']
+        }, {
+          id: 'C',
+          text: ['Bat']
+        }], {
+          1: ['A'],
+          2: ['B'],
+          3: ['C']
+        }, () => alert('Congratulations!'));
+    }
+  };
 
   function showGameBoard(assId, bool) {
     if (bool) {

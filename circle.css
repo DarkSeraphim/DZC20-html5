@@ -1,5 +1,5 @@
 #circle-wrapper{
-  height: calc(70% - 5px);
+  height: calc(60% - 5px);
   width: calc(20% - 10px);
   display: flex;
   align-items: center;

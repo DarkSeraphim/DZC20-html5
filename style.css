@@ -363,7 +363,7 @@ body {
 
 #puzzle {
     width: calc(65% - 10px);
-    height: calc(70% - 5px);
+    height: calc(60% - 5px);
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -372,7 +372,7 @@ body {
 
 #input-wrapper{
     width: calc(15% - 10px);
-    height: calc(70% - 5px);
+    height: calc(60% - 5px);
     float: left;
     text-align: center;
     font-weight: bold;
@@ -421,7 +421,7 @@ body {
 
 #tiles-wrapper {
     width: calc(100% - 10px);
-    height: calc(30% - 5px);
+    height: calc(40% - 5px);
 }
 
 #tiles {
@@ -436,7 +436,7 @@ body {
 
 #puzzle-validate {
     width: calc(20% - 10px);
-    height: 100%;
+    height: 75%;
     padding: 5px;
     box-sizing: content-box;
     float: left;
@@ -475,6 +475,7 @@ body {
     width: 100%;
     height: 100%;
     border-radius: 5px;
+    padding: 1px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -484,16 +485,23 @@ body {
     box-sizing: border-box;
 }
 
-.tile span {
+.tile > span {
     display: inline-flex;
     /*line-height: 40px;*/
     color: black;
-    height: 12px;
+    height: 20px;
+    min-height: 20px;
+    width: 100%;
+}
+
+.slot {
+    width: 240px !important;
+    height: 240px !important;
 }
 
 .slot, #tiles ul li {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
 }
 
 .snap-target {
@@ -506,6 +514,10 @@ body {
     width: calc(100% - 2px);
 }
 
+.tile span .snap-target {
+    height: calc(100% - 4px);
+    width: calc(100% - 4px);
+}
 
 .switch {
   position: relative;
@@ -632,4 +644,20 @@ body {
 
 .switch-green > .switch-input:checked ~ .switch-label {
   background: #4fb845;
+}
+
+#assignment-title {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 75px;
+    display: flex;
+}
+
+#assignment-title span {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
