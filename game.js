@@ -297,7 +297,6 @@ if (typeof StyleHelper === 'undefined') {
                 <span>B</span>
             </div>
             */
-            // <div class="tile" data-key="A"><span>A</span></div>
             var li = document.createElement('li');
             var div = document.createElement('div');
             div.setAttribute('class', 'tile');
