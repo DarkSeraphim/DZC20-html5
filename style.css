@@ -297,7 +297,7 @@ body {
     font-size: small;
 }
 .email-message{
-    white-space: pre;
+    white-space: pre-line;
 }
 /*INBOX ITEM > LEVEL*/
 .email-level-container{

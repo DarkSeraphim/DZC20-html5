@@ -46,6 +46,7 @@ if (typeof StyleHelper === 'undefined') {
       });
 
       setTimeout(function () {
+        user.assignment = user.assignment || ASSIGNMENTS;
         user.emails = user.emails || DEFAULT_EMAILS;
         showMessage(user.emails[0]);
         updateInbox();
@@ -54,6 +55,7 @@ if (typeof StyleHelper === 'undefined') {
         StyleHelper.show('.shortcuts');
         StyleHelper.set('body', 'backgroundImage', 'url(./images/desktop-bg.jpg)');
         AudioHelper.play('startup');
+        activateAssignment(1);
       }, 3000);
       return false;
     });
@@ -103,32 +105,31 @@ if (typeof StyleHelper === 'undefined') {
       containment: 'parent'
     });
 
-
     DOMHelper.setProperty('#username', 'value', 'DarkSeraphim');
     document.querySelector('form').onsubmit({ preventDefault: _ => {} });
   });
 
   function updateInbox() {
     // Removes all mails
-    var emailList = document.getElementsByClassName('email-list')[0];
+    let emailList = document.getElementsByClassName('email-list')[0];
     while (emailList.lastChild) {
       emailList.removeChild(emailList.lastChild);
     }
     // Adds mails
-    user.emails.forEach(function (email) {
-      var listitem = document.createElement('div');
+    user.emails.forEach((email) => {
+      let listitem = document.createElement('div');
       listitem.className = 'email-listitem';
-      var icon = document.createElement('div');
+      let icon = document.createElement('div');
       icon.className = 'email-icon';
       icon.className += email.read ? ' email-read' : ' email-unread';
-      var title = document.createElement('div');
+      let title = document.createElement('div');
       title.className = 'email-title';
       title.textContent = email.title;
       listitem.appendChild(icon);
       listitem.appendChild(title);
       emailList.appendChild(listitem);
       // Registers onclick
-      listitem.onclick = function () {
+      listitem.onclick = () => {
         showMessage(email);
         updateInbox();
       };
@@ -141,7 +142,7 @@ if (typeof StyleHelper === 'undefined') {
 
   // Updates Inbox shortcut badge
   function updateInboxShortcut() {
-    var hasNewMail = user.emails.some((email) => !email.read);
+    let hasNewMail = user.emails.some((email) => !email.read);
     if (hasNewMail) {
       StyleHelper.show('.email-shortcut .email-newmail');
     } else {
@@ -150,16 +151,28 @@ if (typeof StyleHelper === 'undefined') {
   }
 
   function addEmail(from, title, message) {
-    var email = {
-      from: from,
-      title: title,
-      message: message,
+    const email = {
+      from,
+      title,
+      message,
       read: false,
       time: (new Date()).getTime()
     };
     // Adds to state or storage
     user.emails.push(email);
     updateInbox();
+  }
+
+  // Add a new email to inbox after 2 seconds and update assignment status
+  function activateAssignment(assId) {
+    let assignment = user.assignment[assId];
+    assignment.status = 1;
+    let email = Object.assign({ read: false, time: (new Date()).getTime() }, assignment.email);
+    user.emails.push(email);
+    setTimeout(() => {
+      updateInbox();
+      showMessage(user.emails[0]);
+    }, 2000);
   }
 
   function showMessage(email) {
@@ -178,12 +191,12 @@ if (typeof StyleHelper === 'undefined') {
       levelList.removeChild(levelList.lastChild);
     }
     // Adds levels
-    email.assignment.forEach(function (assId) {
-      if (assId >= ASSIGNMENTS.length) {
+    email.assignment.forEach((assId) => {
+      if (assId >= user.assignment.length) {
         throw Error('game.js assignmentId not in range');
       }
       // Hidden assignment
-      let assignment = ASSIGNMENTS[assId];
+      let assignment = user.assignment[assId];
       if (assignment.email.hidden && !assignment.status) {
         return;
       }
@@ -202,17 +215,18 @@ if (typeof StyleHelper === 'undefined') {
       level.appendChild(title);
       levelList.appendChild(level);
       // Onclick assignment shorcut
-      icon.onclick = function () {
+      icon.onclick = () => {
         if (assignment.status) {
           const linkedAssignmentEmail = user.emails.find(
-            function (e) {
-              return email.assignment.length > 1 && e.assignment.length == 1 && e.assignment.includes(assId)
-            });
+            (e) => email.assignment.length > 1 && e.assignment.length == 1 && e.assignment.includes(assId));
           // Show assignment email if user is currently using overview email
           if (linkedAssignmentEmail) {
             showMessage(linkedAssignmentEmail);
             updateInbox();
-          } else { // TODO: Open game board from here!!!
+          } else {
+            if (assignment.hidden) {
+              StyleHelper.setSpyMode(true);
+            }
             showGameBoard(assId, true);
           }
         }
@@ -424,10 +438,9 @@ if (typeof StyleHelper === 'undefined') {
     });
   }
 
-
   function showGameBoard(assId, bool) {
     if (bool) {
-      let assignment = ASSIGNMENTS[assId];
+      let assignment = user.assignment[assId];
       initGameBoard(assignment.slots, assignment.tiles);
       StyleHelper.show('#assignment-modal');
     } else {
