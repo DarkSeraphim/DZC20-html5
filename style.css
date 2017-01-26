@@ -483,7 +483,7 @@ body {
     height: 12px;
 }
 
-.slot {
+.slot, #tiles ul li {
     width: 80px;
     height: 80px;
 }
