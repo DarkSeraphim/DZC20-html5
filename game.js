@@ -446,14 +446,19 @@ if (typeof StyleHelper === 'undefined') {
     });
 
     $('.slot.snap-target').droppable('option', 'disabled', false);
-
     EventHelper.on('#puzzle-validate button', 'click', (e) => {
       e.preventDefault();
       if (validate()) {
+        var delay = 2500;
         try {
-          goKaput(5, 300); //Triggers explosion of the circle
-        } finally {
-          callback();
+          AudioHelper.play('beatLevel');
+          setTimeout(function(){ 
+              goKaput(5, 300);
+          }, delay);
+        } finally {          
+          setTimeout(function(){ 
+              callback();
+          }, delay + 2500);
         }
       } else {
         var selector = '#assignment-modal .modal-transparent';

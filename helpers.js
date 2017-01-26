@@ -4,6 +4,7 @@ window.StyleHelper = (function () {
   var select = function (selector, func) {
     document.querySelectorAll(selector).forEach(element => func(element));
   };
+  var spyModeOn = false;
   return {
     hide: function (selector) {
       select(selector, element => {
@@ -55,21 +56,28 @@ window.StyleHelper = (function () {
       }, step);
     },
 
-    setSpyMode: function(bool) {
-      if (bool) {
-        AudioHelper.play('hackerMusic3');
-        this.set('body', 'background-image', "url('./images/wallpaper-csi.jpg')");
-        this.set('.modal-transparent', 'background', "url('./images/wallpaper-csi.jpg')");
-        DOMHelper.setAttribute('.email-banner img', 'src', './images/inbox-banner-spy.png');
-        document.querySelector('#spy-mode-css').removeAttribute('disabled');
-      } else {
-        AudioHelper.stop('hackerMusic3');
-        this.set('body', 'background-image', "url('./images/desktop-bg.jpg')");
-        this.set('.modal-transparent', 'background', "url('./images/desktop-bg.jpg')");
-        this.set('#spy-mode-css', 'disabled', 'true');
-        DOMHelper.setAttribute('.email-banner img', 'src', './images/inbox-banner.png');
-        DOMHelper.setAttribute('#spy-mode-css', 'disabled', true);
-      }
+    isSpyMode: function(){
+        return spyModeOn;
+    },
+
+    setSpyMode: function(bool){
+        if (bool) {
+            AudioHelper.play('hackerMusic3');
+            this.set('body', 'background-image', "url('./images/wallpaper-csi.jpg')");
+            this.set('.modal-transparent', 'background', "url('./images/wallpaper-csi.jpg')");
+            DOMHelper.setAttribute('.email-banner img', 'src', './images/inbox-banner-spy.png');
+            document.querySelector('#spy-mode-css').removeAttribute('disabled');
+            this.set('#taskbar','background',"url('./images/desktop-taskbar-spy.png')");
+        } else {
+            AudioHelper.stop('hackerMusic3');
+            this.set('body', 'background-image', "url('./images/desktop-bg.jpg')");
+            this.set('.modal-transparent', 'background', "url('./images/desktop-bg.jpg')");
+            this.set('#spy-mode-css', 'disabled', 'true');
+            DOMHelper.setAttribute('.email-banner img', 'src', './images/inbox-banner.png');
+            DOMHelper.setAttribute('#spy-mode-css', 'disabled', true);
+            this.set('#taskbar','background',"url('./images/desktop-taskbar.png')");
+        }
+        spyModeOn = bool;
     }
   };
 }) ();
@@ -149,15 +157,23 @@ window.AudioHelper = (function(){
     };
 
     var soundsToLoad = [
-    'boom', 
-    'shortBoom', 
-    'startup', 
-    'buzzer', 
-    'hackerMusic1',
-    'hackerMusic3'
+        'boom', 
+        'shortBoom', 
+        'startup', 
+        'buzzer', 
+        'hackerMusic1',
+        'hackerMusic3',
+        'beatLevel',
+        'email'
     ];
 
     loadSounds(soundsToLoad, 'mp3');
+
+    //When it finishes, play again
+    sounds['hackerMusic3'].addEventListener('ended', function() {
+        this.currentTime = 0;
+        this.play();
+    }, false);
 
     return {
       play: function(sound) {
@@ -216,9 +232,9 @@ window.AudioHelper = (function(){
 
       toggleMute: function() {
             //TODO: save the currently playing background song and resume it
-            if (isMuted) {         
-                // sounds['hackerMusic3'].play();
-              } else {
+            if (isMuted && StyleHelper.isSpyMode()) {         
+                sounds['hackerMusic3'].play();
+            } else {
                 this.muteAll();
               }
               isMuted = !isMuted;
