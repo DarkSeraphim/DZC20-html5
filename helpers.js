@@ -4,6 +4,7 @@ window.StyleHelper = (function () {
     var select = function (selector, func) {
         document.querySelectorAll(selector).forEach(element => func(element));
     };
+    var spyModeOn = false;
     return {
         hide: function (selector) {
             select(selector, element => {
@@ -54,6 +55,9 @@ window.StyleHelper = (function () {
                 }
             }, step);
         },
+        isSpyMode: function(){
+            return spyModeOn;
+        },
 
         setSpyMode: function(bool){
             if (bool) {
@@ -72,6 +76,7 @@ window.StyleHelper = (function () {
                 DOMHelper.setAttribute('#spy-mode-css', 'disabled', true);
                 this.set('#taskbar','background',"url('./images/desktop-taskbar.png')");
             }
+            spyModeOn = bool;
         }
     };
 }) ();
@@ -214,8 +219,8 @@ window.AudioHelper = (function(){
 
         toggleMute: function(){
             //TODO: save the currently playing background song and resume it
-            if (isMuted) {         
-                // sounds['hackerMusic3'].play();
+            if (isMuted && StyleHelper.isSpyMode()) {         
+                sounds['hackerMusic3'].play();
             } else {
                 this.muteAll();
             }
